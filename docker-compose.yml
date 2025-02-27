@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  db:
+    image: syllogy:latest
+    container_name: syllogy
+    build:
+      context: .
+      dockerfile: ./Dockerfile.db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=syllogy
+    ports:
+      - 3102:5432

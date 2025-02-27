@@ -1,0 +1,11 @@
+$primary: #d59983;
+$primary-dark: #cc856b;
+$primary-thin: #f7ebe4;
+$secondary: #83d5a1;
+
+:export {
+	primary: $primary;
+	primaryThin: $primary-thin;
+	primaryDark: $primary-dark;
+	secondary: $secondary;
+}

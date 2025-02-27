@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id         String   @id @default(uuid())
+    auth_id    String
+    email      String   @unique
+    givenName  String
+    familyName String
+    isAdmin    Boolean? @default(false)
+}
+
+model Claim {
+    id                   String                      @id @default(uuid())
+    name                 String
+    email                String
+    message              String
+    phone                String?
+    occasion             String?
+    date                 DateTime?
+    location             String?
+    peopleQty            Int?
+    readAt               DateTime?
+    createdAt            DateTime                    @default(now())
+    ArgumentsFor         ArgumentsForClaims[]
+    ArgumentsAgainst     ArgumentsAgainstClaims[]
+    SupportingArguments  ClaimsSupportingArgument[]
+}
+
+model Argument {
+    id        String                      @id @default(uuid())
+    name      String
+    type      String
+    claimsMap Json? // determines which claims are used in which parts of the logic
+    // Claims used in this argument
+    Claims    ClaimsSupportingArgument[]
+
+    // For or against claims
+    ForClaims     ArgumentsForClaims[]
+    AgainstClaims ArgumentsAgainstClaims[]
+}
+
+model ArgumentsForClaims {
+    Claim       Claim     @relation(fields: [claimId], references: [id])
+    claimId     String
+    Argument    Argument  @relation(fields: [argumentId], references: [id])
+    argumentId  String
+
+    @@id([claimId, argumentId])
+}
+
+model ArgumentsAgainstClaims {
+    Claim       Claim     @relation(fields: [claimId], references: [id])
+    claimId     String
+    Argument    Argument  @relation(fields: [argumentId], references: [id])
+    argumentId  String
+
+    @@id([claimId, argumentId])
+}
+
+model ClaimsSupportingArgument {
+    Argument    Argument  @relation(fields: [argumentId], references: [id])
+    argumentId  String
+    Claim       Claim     @relation(fields: [claimId], references: [id])
+    claimId     String
+
+    @@id([claimId, argumentId])
+}
