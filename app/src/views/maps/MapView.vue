@@ -70,6 +70,20 @@ type BomTerritory = BomFeatureCommon & {
 };
 
 const features: Record<string, BomFeature> = {
+  "feature-city-of-zarahemla": {
+    id: "feature-city-of-zarahemla",
+    name: "City of Zarahemla",
+    description: "A major city located in the Land of Zarahemla.",
+    startDate: null,
+    endDate: null,
+    constraints: [
+      {
+        featureId: "feature-land-of-zarahemla",
+        description: "Located in the Land of Zarahemla",
+      },
+    ],
+    type: "city",
+  },
   "feature-land-of-nephi": {
     id: "feature-land-of-nephi",
     name: "Land of Nephi",
@@ -164,20 +178,6 @@ const features: Record<string, BomFeature> = {
     ],
     type: "province",
   },
-  "feature-city-of-zarahemla": {
-    id: "feature-city-of-zarahemla",
-    name: "City of Zarahemla",
-    description: "A major city located in the Land of Zarahemla.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "Located in the Land of Zarahemla",
-      },
-    ],
-    type: "city",
-  },
   "feature-sea-east": {
     id: "feature-sea-east",
     name: "Sea East",
@@ -215,7 +215,6 @@ interface Model {
 const models: Model[] = [SorensonModel, BYUModel];
 
 const mapItems = computed<MapItem[]>(() => {
-	console.log("changed!!!!")
   return Object.values(selectedModel.value.featureLocations).map(
     (location) => ({
       key: location.featureId,

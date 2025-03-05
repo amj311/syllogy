@@ -79,7 +79,7 @@ function handleMapClick(e: maplibregl.MapMouseEvent) {
   if (draftState.activeTool) {
     draftState.activeTool.mapClick(e);
   } else {
-	handleMapItemClick(e);
+    handleMapItemClick(e);
   }
 }
 
@@ -112,12 +112,15 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function handleMapItemClick(e: maplibregl.MapMouseEvent) {
-	console.log("handleMapItemClick");
+  console.log("handleMapItemClick");
   const features = map.queryRenderedFeatures(e.point);
-  const mapItemFeature = features.find((f) => f.layer.id.endsWith("-label") || f.layer.id.endsWith("-circle"));
+  const mapItemFeature = features.find(
+    (f) => f.layer.id.endsWith("-label") || f.layer.id.endsWith("-circle")
+  );
   console.log("mapItemFeature", mapItemFeature);
   if (mapItemFeature) {
-    const itemKey = mapItemFeature.layer.id.split("-")[0];
+    const itemKey = mapItemFeature.layer.id.replace(/-(label|circle)$/, "");
+    console.log("itemKey", itemKey);
     focusMapItem(itemKey);
   } else {
     // Unfocus all items if clicked on empty space
@@ -552,56 +555,62 @@ abstract class Painter {
 }
 
 class ProvincePainter extends Painter {
-  getSources() {
-    const closedPath = closePolygon(this.item.coordinates);
-    return [
-      {
-        id: this.item.key + "-source",
-        definition: {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            geometry: {
-              type: "Polygon",
-              coordinates: [closedPath.map((point) => [point.lng, point.lat])],
-            },
-            properties: {},
-          },
-        },
-      },
-    ];
-  }
+getSources() {
+	const closedPath = closePolygon(this.item.coordinates);
+	const centerPoint = closedPath.reduce(
+		(center, point) => {
+			center.lat += point.lat;
+			center.lng += point.lng;
+			return center;
+		},
+		{ lat: 0, lng: 0 }
+	);
+	centerPoint.lat /= closedPath.length;
+	centerPoint.lng /= closedPath.length;
+	return [
+		{
+			id: this.item.key + "-source",
+			definition: {
+				type: "geojson",
+				data: {
+					type: "Feature",
+					geometry: {
+						type: "Polygon",
+						coordinates: [closedPath.map((point) => [point.lng, point.lat])],
+					},
+					properties: {},
+				},
+			},
+		},
+		{
+			id: this.item.key + "-center-source",
+			definition: {
+				type: "geojson",
+				data: {
+					type: "Feature",
+					geometry: {
+						type: "Point",
+						coordinates: [centerPoint.lng, centerPoint.lat],
+					},
+					properties: {},
+				},
+			},
+		},
+	];
+}
 
   getLayers() {
+    console.log("isFocused", this.isFocused);
     return [
-      {
-        id: this.item.key + "-fill",
-        type: "fill",
-        source: this.item.key + "-source",
-        paint: {
-          "fill-color": "#088",
-          "fill-opacity": 0.25,
-        },
-      },
-      {
-        id: this.item.key + "-line",
-        type: "line",
-        source: this.item.key + "-source",
-        paint: {
-          "line-color": "#088",
-          "line-width": 2,
-        },
-      },
       {
         id: this.item.key + "-label",
         type: "symbol",
-        source: this.item.key + "-source",
+        source: this.item.key + "-center-source",
         layout: {
           "text-field": this.item.label || "",
           "text-font": ["Noto Sans Regular"],
-          "text-size": 12,
+          "text-size": 18,
           "text-anchor": "center",
-          "symbol-placement": "point", // Ensure the label is placed only once
         },
         paint: {
           "text-color": "#000000",
@@ -610,6 +619,27 @@ class ProvincePainter extends Painter {
         },
       },
     ];
+  }
+
+  protected onFocus(): void {
+    if (this.map.getLayer(this.item.key + "-line")) {
+      return;
+    }
+    this.map.addLayer({
+      id: this.item.key + "-line",
+      type: "line",
+      source: this.item.key + "-source",
+      paint: {
+        "line-color": "#088",
+        "line-width": 2,
+      },
+    });
+  }
+
+  protected onBlur(): void {
+    if (this.map.getLayer(this.item.key + "-line")) {
+      this.map.removeLayer(this.item.key + "-line");
+    }
   }
 }
 
@@ -1135,7 +1165,7 @@ onMounted(() => {
     }
 
     updatePainters();
-	setupMapEventListeners();
+    setupMapEventListeners();
   });
 });
 
