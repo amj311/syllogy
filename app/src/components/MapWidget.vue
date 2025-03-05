@@ -368,7 +368,6 @@ class PinDropper extends DrawingTool {
     const coordinates = getEventCoordinates(e);
     this.addPointToPath(coordinates);
     this.placeMarker(coordinates);
-    endDrawing(true);
   }
 
   private placeMarker(coordinates: Coordinates) {
