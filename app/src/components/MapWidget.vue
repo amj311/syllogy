@@ -356,6 +356,14 @@ class PinDropper extends DrawingTool {
     super(map, path, onChange);
   }
 
+  public destroy(): void {
+    super.destroy();
+    if (this.marker) {
+      this.marker.remove();
+      this.marker = null; // Ensure marker is set to null after removal
+    }
+  }
+
   protected mapClick(e: maplibregl.MapMouseEvent) {
     const coordinates = getEventCoordinates(e);
     this.addPointToPath(coordinates);
