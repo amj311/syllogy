@@ -10,6 +10,8 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import debounce from "@/utils/debounce";
 
+const TERRAIN_EXAGGERATION = 1.5;
+
 const ToolTypes = ["linepointer", "mouse", "rectangle", "pindropper"] as const;
 type ToolType = (typeof ToolTypes)[number];
 
@@ -495,6 +497,7 @@ abstract class Painter {
   }
 
   create() {
+	console.log("Creating painter for item", this.item.key);
     const sources = this.getSources();
     const layers = this.getLayers();
     sources.forEach((source) =>
@@ -673,7 +676,7 @@ class RiverPainter extends Painter {
         },
         paint: {
           "line-color": "#00AAFF",
-          "line-width": 10,
+          "line-width": 5,
         },
       },
       {
@@ -954,16 +957,21 @@ function updatePainters() {
     }
   }
 
+  const itemsByImportance = Array.from(props.mapItems).sort(
+	(a, b) => (b.importance || 0) - (a.importance || 0)
+  );
+
   // create new painters
-  props.mapItems.forEach((item) => {
+  itemsByImportance.forEach((item) => {
+	// For now redraw all to maintain importance order
     // check to see if item has been drawn
-    const hasBeenDrawn = currentPainters.value.has(item.key);
-    if (!hasBeenDrawn) {
+    // const hasBeenDrawn = currentPainters.value.has(item.key);
+    // if (!hasBeenDrawn) {
       const painter = getPainter(map, item);
       currentPainters.value.set(item.key, painter);
       painter.create();
       painter.setFocus(focusedItemKeys.value.has(item.key)); // Set focus state
-    }
+    // }
   });
 }
 
@@ -1088,7 +1096,7 @@ onMounted(() => {
           };
           nextStyle.terrain = {
             source: "terrainSource",
-            exaggeration: 1.25,
+            exaggeration: TERRAIN_EXAGGERATION,
           };
 
           nextStyle.sky = {
@@ -1128,7 +1136,7 @@ onMounted(() => {
     map.addControl(
       new maplibregl.TerrainControl({
         source: "terrainSource",
-        exaggeration: 1.25,
+        exaggeration: TERRAIN_EXAGGERATION,
       })
     );
   }

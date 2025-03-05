@@ -70,6 +70,21 @@ type BomTerritory = BomFeatureCommon & {
 };
 
 const features: Record<string, BomFeature> = {
+  "feature-river-sidon": {
+    id: "feature-river-sidon",
+    name: "River Sidon",
+    description:
+      "Flows through the Land of Zarahemla; has a directional flow that suggests a higher elevation in the south and lower in the north.",
+    startDate: null,
+    endDate: null,
+    constraints: [
+      {
+        featureId: "feature-land-of-zarahemla",
+        description: "Flows through the Land of Zarahemla",
+      },
+    ],
+    type: "river",
+  },
   "feature-city-of-zarahemla": {
     id: "feature-city-of-zarahemla",
     name: "City of Zarahemla",
@@ -116,21 +131,6 @@ const features: Record<string, BomFeature> = {
       },
     ],
     type: "province",
-  },
-  "feature-river-sidon": {
-    id: "feature-river-sidon",
-    name: "River Sidon",
-    description:
-      "Flows through the Land of Zarahemla; has a directional flow that suggests a higher elevation in the south and lower in the north.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "Flows through the Land of Zarahemla",
-      },
-    ],
-    type: "river",
   },
   "feature-land-of-bountiful": {
     id: "feature-land-of-bountiful",
@@ -214,6 +214,19 @@ interface Model {
 
 const models: Model[] = [SorensonModel, BYUModel];
 
+const importanceRank: Array<BomFeature["type"]> = [
+  "province",
+  "city",
+  "geo-area",
+  "point",
+  "sea",
+  "river",
+];
+const importanceByType = importanceRank.reduce((acc, type, index) => {
+  acc[type] = index + 1;
+  return acc;
+}, {} as Record<BomFeature["type"], number>);
+
 const mapItems = computed<MapItem[]>(() => {
   return Object.values(selectedModel.value.featureLocations).map(
     (location) => ({
@@ -221,6 +234,7 @@ const mapItems = computed<MapItem[]>(() => {
       type: features[location.featureId].type,
       coordinates: location.coordinates,
       label: features[location.featureId].name,
+      importance: importanceByType[features[location.featureId].type],
     })
   );
 });
