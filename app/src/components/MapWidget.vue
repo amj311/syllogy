@@ -606,7 +606,7 @@ getSources() {
         source: this.item.key + "-center-source",
         layout: {
           "text-field": this.item.label || "",
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Noto Sans Italic"],
           "text-size": 18,
           "text-anchor": "center",
         },

@@ -87,7 +87,7 @@ const features: Record<string, BomFeature> = {
   },
   "feature-city-of-zarahemla": {
     id: "feature-city-of-zarahemla",
-    name: "City of Zarahemla",
+    name: "Zarahemla",
     description: "A major city located in the Land of Zarahemla.",
     startDate: null,
     endDate: null,
