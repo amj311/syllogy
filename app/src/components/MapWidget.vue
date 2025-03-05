@@ -112,19 +112,15 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function handleMapItemClick(e: maplibregl.MapMouseEvent) {
-  console.log("handleMapItemClick");
   const features = map.queryRenderedFeatures(e.point);
   const mapItemFeature = features.find(
     (f) => f.layer.id.endsWith("-label") || f.layer.id.endsWith("-circle")
   );
-  console.log("mapItemFeature", mapItemFeature);
+  // Unfocus all items
+  focusedItemKeys.value.forEach((key) => unfocusMapItem(key));
   if (mapItemFeature) {
     const itemKey = mapItemFeature.layer.id.replace(/-(label|circle)$/, "");
-    console.log("itemKey", itemKey);
     focusMapItem(itemKey);
-  } else {
-    // Unfocus all items if clicked on empty space
-    focusedItemKeys.value.forEach((key) => unfocusMapItem(key));
   }
 }
 
@@ -600,7 +596,6 @@ getSources() {
 }
 
   getLayers() {
-    console.log("isFocused", this.isFocused);
     return [
       {
         id: this.item.key + "-label",
@@ -1048,7 +1043,6 @@ defineExpose({
 });
 
 onMounted(() => {
-  console.log("mapBOundaries", props.mapBoundary);
   map = new maplibregl.Map({
     container: mapContainer.value as HTMLElement,
     center: [-120, 37.422],
@@ -1177,8 +1171,6 @@ onUnmounted(() => {
 watch(
   computed(() => JSON.stringify(props.mapItems.map((item) => item.key))),
   () => {
-    console.log("updating poauinters!");
-    console.log(props.mapItems.map((item) => item.key));
     updatePainters();
   },
   { deep: true }
