@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/user.store';
 import { AuthService } from '@/services/authService';
 import Home from '@/views/Home.vue';
 import ClaimView from '@/views/ClaimView.vue';
-import MapView from '@/views/MapView.vue';
+import MapView from '@/views/maps/MapView.vue';
 
 const routes: Array<RouteRecordRaw> = [
 	{

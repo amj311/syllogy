@@ -53,7 +53,9 @@ const draftState = reactive({
   onEnd: null as ((save: boolean, path: Array<Coordinates>) => void) | null,
 });
 
-function setupDrawingEventListeners() {
+const focusedItemKeys = ref<Set<string>>(new Set()); // Change to Set of focused item keys
+
+function setupMapEventListeners() {
   if (!map) return;
 
   map.on("click", handleMapClick);
@@ -63,7 +65,7 @@ function setupDrawingEventListeners() {
   window.addEventListener("keydown", handleKeyDown);
 }
 
-function destroyDrawingEventListeners() {
+function destroyMapEventListeners() {
   if (!map) return;
 
   map.off("click", handleMapClick);
@@ -76,6 +78,8 @@ function destroyDrawingEventListeners() {
 function handleMapClick(e: maplibregl.MapMouseEvent) {
   if (draftState.activeTool) {
     draftState.activeTool.mapClick(e);
+  } else {
+	handleMapItemClick(e);
   }
 }
 
@@ -104,6 +108,20 @@ function handleKeyDown(e: KeyboardEvent) {
     } else if (e.key === "Enter") {
       draftState.activeTool.enter();
     }
+  }
+}
+
+function handleMapItemClick(e: maplibregl.MapMouseEvent) {
+	console.log("handleMapItemClick");
+  const features = map.queryRenderedFeatures(e.point);
+  const mapItemFeature = features.find((f) => f.layer.id.endsWith("-label") || f.layer.id.endsWith("-circle"));
+  console.log("mapItemFeature", mapItemFeature);
+  if (mapItemFeature) {
+    const itemKey = mapItemFeature.layer.id.split("-")[0];
+    focusMapItem(itemKey);
+  } else {
+    // Unfocus all items if clicked on empty space
+    focusedItemKeys.value.forEach((key) => unfocusMapItem(key));
   }
 }
 
@@ -189,7 +207,7 @@ class LinePointer extends DrawingTool {
       type: "linepointer",
       coordinates: path,
     };
-    const painter = new Painter(map, item);
+    const painter = getPainter(map, item);
     super(map, path, onChange, painter);
   }
 
@@ -220,7 +238,7 @@ class Mouse extends DrawingTool {
       type: "mouse",
       coordinates: path,
     };
-    const painter = new Painter(map, item);
+    const painter = getPainter(map, item);
     super(map, path, onChange, painter);
   }
 
@@ -302,7 +320,7 @@ class Rectangle extends DrawingTool {
       type: "rectangle",
       coordinates: path,
     };
-    const painter = new Painter(map, item);
+    const painter = getPainter(map, item);
     super(map, path, onChange, painter);
   }
 
@@ -409,12 +427,10 @@ function startDrawing({
   draftState.path = path;
   // draftState.onChange = onChange;
   draftState.onEnd = onEnd;
-  setupDrawingEventListeners();
   enterNewTool(toolType);
 }
 
 function endDrawing(save: boolean = true) {
-  destroyDrawingEventListeners();
   if (draftState.activeTool) {
     draftState.activeTool.destroy();
   }
@@ -462,17 +478,85 @@ function closePolygon(
   return newCoordinates;
 }
 
-interface Feature {
-  getSources(item: MapItem): any[];
-  getLayers(item: MapItem): any[];
+abstract class Painter {
+  protected map: maplibregl.Map;
+  protected item: MapItem;
+  protected isFocused = false;
+
+  constructor(map: maplibregl.Map, item: MapItem) {
+    this.map = map;
+    this.item = item;
+  }
+
+  abstract getSources(): any[];
+  abstract getLayers(): any[];
+
+  get path() {
+    return this.item.coordinates;
+  }
+
+  create() {
+    const sources = this.getSources();
+    const layers = this.getLayers();
+    sources.forEach((source) =>
+      this.map.addSource(source.id, source.definition)
+    );
+    layers.forEach((layer) => this.map.addLayer(layer));
+  }
+
+  updateGeometry(newCoordinates: Array<Coordinates>) {
+    this.item.coordinates = newCoordinates;
+    const newSources = this.getSources();
+    newSources.forEach((newSource) => {
+      const mapSource = this.map.getSource(newSource.id) as any;
+      if (mapSource) {
+        mapSource.setData(newSource.definition.data);
+      }
+    });
+  }
+
+  updateStyles() {
+    const layers = this.getLayers();
+    layers.forEach((layer) => {
+      const mapLayer = this.map.getLayer(layer.id);
+      if (mapLayer) {
+        for (const key in layer.paint) {
+          mapLayer.setPaintProperty(key, layer.paint[key]);
+        }
+      }
+    });
+  }
+
+  setFocus(focused: boolean) {
+    this.isFocused = focused;
+    this.updateStyles();
+    if (focused) {
+      this.onFocus();
+    } else {
+      this.onBlur();
+    }
+  }
+  protected onFocus() {}
+  protected onBlur() {}
+
+  remove() {
+    const layers = this.getLayers();
+    layers.forEach((layer) => {
+      if (this.map.getLayer(layer.id)) this.map.removeLayer(layer.id);
+    });
+    const sources = this.getSources();
+    sources.forEach((source) => {
+      if (this.map.getSource(source.id)) this.map.removeSource(source.id);
+    });
+  }
 }
 
-class ProvinceFeature implements Feature {
-  getSources(item: MapItem): any[] {
-    const closedPath = closePolygon(item.coordinates);
+class ProvincePainter extends Painter {
+  getSources() {
+    const closedPath = closePolygon(this.item.coordinates);
     return [
       {
-        id: item.key + "-source",
+        id: this.item.key + "-source",
         definition: {
           type: "geojson",
           data: {
@@ -488,21 +572,21 @@ class ProvinceFeature implements Feature {
     ];
   }
 
-  getLayers(item: MapItem): any[] {
+  getLayers() {
     return [
       {
-        id: item.key + "-fill",
+        id: this.item.key + "-fill",
         type: "fill",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         paint: {
           "fill-color": "#088",
           "fill-opacity": 0.25,
         },
       },
       {
-        id: item.key + "-line",
+        id: this.item.key + "-line",
         type: "line",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         paint: {
           "line-color": "#088",
           "line-width": 2,
@@ -529,18 +613,18 @@ class ProvinceFeature implements Feature {
   }
 }
 
-class RiverFeature implements Feature {
-  getSources(item: MapItem): any[] {
+class RiverPainter extends Painter {
+  getSources() {
     return [
       {
-        id: item.key + "-source",
+        id: this.item.key + "-source",
         definition: {
           type: "geojson",
           data: {
             type: "Feature",
             geometry: {
               type: "LineString",
-              coordinates: item.coordinates.map((point) => [
+              coordinates: this.item.coordinates.map((point) => [
                 point.lng,
                 point.lat,
               ]),
@@ -552,12 +636,12 @@ class RiverFeature implements Feature {
     ];
   }
 
-  getLayers(item: MapItem): any[] {
+  getLayers() {
     return [
       {
-        id: item.key + "-line",
+        id: this.item.key + "-line",
         type: "line",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         layout: {
           "line-cap": "round",
           "line-join": "round",
@@ -568,15 +652,15 @@ class RiverFeature implements Feature {
         },
       },
       {
-        id: item.key + "-label",
+        id: this.item.key + "-label",
         type: "symbol",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         layout: {
           "symbol-placement": "line",
-          "text-field": item.label || "",
+          "text-field": this.item.label || "",
           "text-size": 10,
           "text-rotation-alignment": "map",
-          "text-font": ["Noto Sans Regular"], // Override font to avoid 404
+          "text-font": ["Noto Sans Regular"],
         },
         paint: {
           "text-color": "#0000FF",
@@ -586,18 +670,21 @@ class RiverFeature implements Feature {
   }
 }
 
-class CityFeature implements Feature {
-  getSources(item: MapItem): any[] {
+class CityPainter extends Painter {
+  getSources() {
     return [
       {
-        id: item.key + "-source",
+        id: this.item.key + "-source",
         definition: {
           type: "geojson",
           data: {
             type: "Feature",
             geometry: {
               type: "Point",
-              coordinates: [item.coordinates[0].lng, item.coordinates[0].lat],
+              coordinates: [
+                this.item.coordinates[0].lng,
+                this.item.coordinates[0].lat,
+              ],
             },
             properties: {},
           },
@@ -606,25 +693,25 @@ class CityFeature implements Feature {
     ];
   }
 
-  getLayers(item: MapItem): any[] {
+  getLayers() {
     return [
       {
-        id: item.key + "-circle",
+        id: this.item.key + "-circle",
         type: "circle",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         paint: {
           "circle-radius": 6,
-          "circle-color": "rgba(128, 128, 128, 0.5)", // Transparent grey fill
+          "circle-color": "rgba(128, 128, 128, 0.5)",
           "circle-stroke-width": 2,
-          "circle-stroke-color": "#FFFFFF", // White stroke
+          "circle-stroke-color": "#FFFFFF",
         },
       },
       {
-        id: item.key + "-label",
+        id: this.item.key + "-label",
         type: "symbol",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         layout: {
-          "text-field": item.label || "",
+          "text-field": this.item.label || "",
           "text-font": ["Noto Sans Regular"],
           "text-offset": [1, 0],
           "text-anchor": "left",
@@ -672,18 +759,18 @@ function dottedLineLayers(sourceId: string) {
   ];
 }
 
-class LinePointerFeature implements Feature {
-  getSources(item: MapItem): any[] {
+class LinePointerPainter extends Painter {
+  getSources() {
     return [
       {
-        id: item.key + "-source",
+        id: this.item.key + "-source",
         definition: {
           type: "geojson",
           data: {
             type: "Feature",
             geometry: {
               type: "LineString",
-              coordinates: item.coordinates.map((point) => [
+              coordinates: this.item.coordinates.map((point) => [
                 point.lng,
                 point.lat,
               ]),
@@ -695,24 +782,23 @@ class LinePointerFeature implements Feature {
     ];
   }
 
-  getLayers(item: MapItem): any[] {
-    return dottedLineLayers(item.key + "-source");
+  getLayers() {
+    return dottedLineLayers(this.item.key + "-source");
   }
 }
 
-class MouseFeature implements Feature {
-  getSources(item: MapItem): any[] {
+class MousePainter extends Painter {
+  getSources() {
     return [
-      // line source
       {
-        id: item.key + "-linesource",
+        id: this.item.key + "-linesource",
         definition: {
           type: "geojson",
           data: {
             type: "Feature",
             geometry: {
               type: "LineString",
-              coordinates: item.coordinates.map((point) => [
+              coordinates: this.item.coordinates.map((point) => [
                 point.lng,
                 point.lat,
               ]),
@@ -721,14 +807,13 @@ class MouseFeature implements Feature {
           },
         },
       },
-      // points source
       {
-        id: item.key + "-pointsource",
+        id: this.item.key + "-pointsource",
         definition: {
           type: "geojson",
           data: {
             type: "FeatureCollection",
-            features: item.coordinates.map((point, index) => ({
+            features: this.item.coordinates.map((point, index) => ({
               type: "Feature",
               geometry: {
                 type: "Point",
@@ -742,13 +827,13 @@ class MouseFeature implements Feature {
     ];
   }
 
-  getLayers(item: MapItem): any[] {
+  getLayers() {
     const layers = [
-      ...dottedLineLayers(item.key + "-linesource"),
+      ...dottedLineLayers(this.item.key + "-linesource"),
       {
-        id: item.key + "-points",
+        id: this.item.key + "-points",
         type: "circle",
-        source: item.key + "-pointsource",
+        source: this.item.key + "-pointsource",
         paint: {
           "circle-radius": 5,
           "circle-color": "#FFFFFF",
@@ -760,12 +845,12 @@ class MouseFeature implements Feature {
   }
 }
 
-class RectangleFeature implements Feature {
-  getSources(item: MapItem): any[] {
-    const closedPath = closePolygon(item.coordinates);
+class RectanglePainter extends Painter {
+  getSources() {
+    const closedPath = closePolygon(this.item.coordinates);
     return [
       {
-        id: item.key + "-source",
+        id: this.item.key + "-source",
         definition: {
           type: "geojson",
           data: {
@@ -781,21 +866,21 @@ class RectangleFeature implements Feature {
     ];
   }
 
-  getLayers(item: MapItem): any[] {
+  getLayers() {
     return [
       {
-        id: item.key + "-fill",
+        id: this.item.key + "-fill",
         type: "fill",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         paint: {
           "fill-color": "#088",
           "fill-opacity": 0.25,
         },
       },
       {
-        id: item.key + "-line",
+        id: this.item.key + "-line",
         type: "line",
-        source: item.key + "-source",
+        source: this.item.key + "-source",
         paint: {
           "line-color": "#088",
           "line-width": 2,
@@ -805,75 +890,25 @@ class RectangleFeature implements Feature {
   }
 }
 
-// Dictionary of Feature classes
-const featureClasses: Partial<Record<MapItem["type"], new () => Feature>> = {
-  province: ProvinceFeature,
-  river: RiverFeature,
-  city: CityFeature,
-  linepointer: LinePointerFeature,
-  mouse: MouseFeature,
-  rectangle: RectangleFeature,
-  // Add more feature classes as needed
+// Dictionary of Painter classes
+const painterClasses: Partial<
+  Record<MapItem["type"], new (map: maplibregl.Map, item: MapItem) => Painter>
+> = {
+  province: ProvincePainter,
+  river: RiverPainter,
+  city: CityPainter,
+  linepointer: LinePointerPainter,
+  mouse: MousePainter,
+  rectangle: RectanglePainter,
+  // Add more painter classes as needed
 };
 
-class Painter {
-  private feature!: Feature;
-
-  constructor(private map: maplibregl.Map, private item: MapItem) {
-    const FeatureClass = featureClasses[this.item.type];
-    if (FeatureClass) {
-      this.feature = new FeatureClass();
-    } else {
-      throw new Error(`Unsupported feature type: ${this.item.type}`);
-    }
+function getPainter(map: maplibregl.Map, mapItem: MapItem): Painter {
+  const PainterClass = painterClasses[mapItem.type];
+  if (!PainterClass) {
+    throw new Error(`No painter class found for type: ${mapItem.type}`);
   }
-
-  get path() {
-    return this.item.coordinates;
-  }
-
-  create() {
-    const sources = this.feature.getSources(this.item);
-    const layers = this.feature.getLayers(this.item);
-    sources.forEach((source) =>
-      this.map.addSource(source.id, source.definition)
-    );
-    layers.forEach((layer) => this.map.addLayer(layer));
-  }
-
-  updateGeometry(newCoordinates: Array<Coordinates>) {
-    this.item.coordinates = newCoordinates;
-    const newSources = this.feature.getSources(this.item);
-    newSources.forEach((newSource) => {
-      const mapSource = this.map.getSource(newSource.id) as any;
-      if (mapSource) {
-        mapSource.setData(newSource.definition.data);
-      }
-    });
-  }
-
-  updateStyles(item: MapItem) {
-    const layers = this.feature.getLayers(item);
-    layers.forEach((layer) => {
-      const mapLayer = this.map.getLayer(layer.id);
-      if (mapLayer) {
-        for (const key in layer.paint) {
-          mapLayer.setPaintProperty(key, layer.paint[key]);
-        }
-      }
-    });
-  }
-
-  remove() {
-    const layers = this.feature.getLayers(this.item);
-    layers.forEach((layer) => {
-      if (this.map.getLayer(layer.id)) this.map.removeLayer(layer.id);
-    });
-    const sources = this.feature.getSources(this.item);
-    sources.forEach((source) => {
-      if (this.map.getSource(source.id)) this.map.removeSource(source.id);
-    });
-  }
+  return new PainterClass(map, mapItem);
 }
 
 const currentPainters = ref<Map<string, Painter>>(new Map());
@@ -899,9 +934,10 @@ function updatePainters() {
     // check to see if item has been drawn
     const hasBeenDrawn = currentPainters.value.has(item.key);
     if (!hasBeenDrawn) {
-      const painter = new Painter(map, item);
+      const painter = getPainter(map, item);
       currentPainters.value.set(item.key, painter);
       painter.create();
+      painter.setFocus(focusedItemKeys.value.has(item.key)); // Set focus state
     }
   });
 }
@@ -963,10 +999,22 @@ function drawFeature(
   });
 }
 
+function focusMapItem(key: string) {
+  focusedItemKeys.value.add(key);
+  currentPainters.value.get(key)?.setFocus(true);
+}
+
+function unfocusMapItem(key: string) {
+  focusedItemKeys.value.delete(key);
+  currentPainters.value.get(key)?.setFocus(false);
+}
+
 defineExpose({
   editMapItem,
   editBoundary,
   drawFeature, // Expose the new function
+  focusMapItem, // Expose the new function
+  unfocusMapItem, // Expose the new function
 });
 
 onMounted(() => {
@@ -1087,11 +1135,12 @@ onMounted(() => {
     }
 
     updatePainters();
+	setupMapEventListeners();
   });
 });
 
 onUnmounted(() => {
-  destroyDrawingEventListeners();
+  destroyMapEventListeners();
 });
 
 // Watch for changes in mapItems prop
@@ -1100,7 +1149,7 @@ watch(
   () => {
     console.log("updating poauinters!");
     console.log(props.mapItems.map((item) => item.key));
-    // updatePainters();
+    updatePainters();
   },
   { deep: true }
 );
