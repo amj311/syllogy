@@ -508,6 +508,23 @@ class ProvinceFeature implements Feature {
           "line-width": 2,
         },
       },
+      {
+        id: this.item.key + "-label",
+        type: "symbol",
+        source: this.item.key + "-source",
+        layout: {
+          "text-field": this.item.label || "",
+          "text-font": ["Noto Sans Regular"],
+          "text-size": 12,
+          "text-anchor": "center",
+          "symbol-placement": "point", // Ensure the label is placed only once
+        },
+        paint: {
+          "text-color": "#000000",
+          "text-halo-color": "#FFFFFF",
+          "text-halo-width": 1,
+        },
+      },
     ];
   }
 }
