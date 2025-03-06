@@ -3,71 +3,8 @@ import MapWidget, { MapItem } from "@/components/MapWidget.vue";
 import { onMounted, ref, computed, Component } from "vue";
 import { SorensonModel } from "./bomModels/sorenson";
 import { BYUModel } from "./bomModels/byu";
+import { BomFeature, Coordinates, FeatureId, Model } from "./mapTypes";
 
-type FeatureId = string;
-
-interface Constraint {
-  featureId: FeatureId | null;
-  description: string;
-}
-
-interface BomFeatureCommon {
-  id: FeatureId;
-  name: string;
-  description: string;
-  startDate: string | null;
-  endDate: string | null;
-  constraints: Constraint[];
-  type: "city" | "province" | "geo-area" | "river" | "sea" | "point";
-}
-type BomFeatureCity = BomFeatureCommon & {
-  type: "city";
-};
-
-type BomFeatureProvince = BomFeatureCommon & {
-  type: "province";
-};
-
-type BomFeatureGeoArea = BomFeatureCommon & {
-  type: "geo-area";
-};
-
-type BomFeatureRiver = BomFeatureCommon & {
-  type: "river";
-};
-
-type BomFeatureSea = BomFeatureCommon & {
-  type: "sea";
-};
-
-type BomFeaturePoint = BomFeatureCommon & {
-  type: "point";
-  icon: string;
-};
-
-/**
- * Locations that need to be represented on the map.
- */
-type BomFeature =
-  | BomFeatureCity
-  | BomFeatureProvince
-  | BomFeatureGeoArea
-  | BomFeatureRiver
-  | BomFeatureSea
-  | BomFeaturePoint;
-
-/**
- * Defines the movements of political bodies across the land.
- * Tells which areas (BomFeatures) are controlled by which groups between which dates.
- */
-type BomTerritory = BomFeatureCommon & {
-  type: "territory";
-  borders: Array<{
-    startDate: string | null;
-    endDate: string | null;
-    containedFeatures: FeatureId[];
-  }>;
-};
 
 const features: Record<string, BomFeature> = {
   "feature-river-sidon": {
@@ -193,24 +130,6 @@ const features: Record<string, BomFeature> = {
     type: "sea",
   },
 };
-
-type Coordinates = { lat: number; lng: number };
-
-interface LocationProposal {
-  id: string;
-  featureId: FeatureId;
-  realWorldLocationName?: string;
-  coordinates: Array<Coordinates>;
-}
-
-interface Model {
-  id: number;
-  name: string;
-  description: string;
-  featureLocations: Record<FeatureId, LocationProposal>;
-  mapBoundary?: [Coordinates, Coordinates];
-  customMapBackground?: string;
-}
 
 const models: Model[] = [SorensonModel, BYUModel];
 
@@ -413,7 +332,7 @@ function copyModelAsJson() {
           ref="mapWidgetRef"
           :mapItems="mapItems"
           :mapBoundary="editingBoundary ? undefined : selectedModel.mapBoundary"
-          :customMapBackground="selectedModel.customMapBackground"
+          :customMap="selectedModel.customMap"
         />
       </div>
     </div>

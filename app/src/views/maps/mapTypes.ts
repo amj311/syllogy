@@ -1,4 +1,4 @@
-type FeatureId = string;
+export type FeatureId = string;
 
 interface Constraint {
   featureId: FeatureId | null;
@@ -14,27 +14,27 @@ interface BomFeatureCommon {
   constraints: Constraint[];
   type: "city" | "province" | "geo-area" | "river" | "sea" | "point";
 }
-type BomFeatureCity = BomFeatureCommon & {
+export type BomFeatureCity = BomFeatureCommon & {
   type: "city";
 };
 
-type BomFeatureProvince = BomFeatureCommon & {
+export type BomFeatureProvince = BomFeatureCommon & {
   type: "province";
 };
 
-type BomFeatureGeoArea = BomFeatureCommon & {
+export type BomFeatureGeoArea = BomFeatureCommon & {
   type: "geo-area";
 };
 
-type BomFeatureRiver = BomFeatureCommon & {
+export type BomFeatureRiver = BomFeatureCommon & {
   type: "river";
 };
 
-type BomFeatureSea = BomFeatureCommon & {
+export type BomFeatureSea = BomFeatureCommon & {
   type: "sea";
 };
 
-type BomFeaturePoint = BomFeatureCommon & {
+export type BomFeaturePoint = BomFeatureCommon & {
   type: "point";
   icon: string;
 };
@@ -42,7 +42,7 @@ type BomFeaturePoint = BomFeatureCommon & {
 /**
  * Locations that need to be represented on the map.
  */
-type BomFeature =
+export type BomFeature =
   | BomFeatureCity
   | BomFeatureProvince
   | BomFeatureGeoArea
@@ -54,7 +54,7 @@ type BomFeature =
  * Defines the movements of political bodies across the land.
  * Tells which areas (BomFeatures) are controlled by which groups between which dates.
  */
-type BomTerritory = BomFeatureCommon & {
+export type BomTerritory = BomFeatureCommon & {
   type: "territory";
   borders: Array<{
     startDate: string | null;
@@ -78,5 +78,8 @@ export interface Model {
   description: string;
   featureLocations: Record<FeatureId, LocationProposal>;
   mapBoundary?: [Coordinates, Coordinates];
-  customMapBackground?: string;
+  customMap?: {
+	src: string;
+	ratio: number;
+  }
 }

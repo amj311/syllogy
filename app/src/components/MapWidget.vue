@@ -10,7 +10,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import debounce from "@/utils/debounce";
 
-const TERRAIN_EXAGGERATION = 1.5;
+const TERRAIN_EXAGGERATION = 1.25;
 
 const ToolTypes = ["linepointer", "mouse", "rectangle", "pindropper"] as const;
 type ToolType = (typeof ToolTypes)[number];
@@ -40,7 +40,10 @@ type Bounds = [Coordinates, Coordinates];
 const props = defineProps<{
   mapItems: Array<MapItem>;
   mapBoundary?: Bounds;
-  customMapBackground?: string;
+  customMap?: {
+    src: string;
+    ratio: number;
+  };
 }>();
 
 const mapContainer = ref<HTMLElement | null>(null);
@@ -497,7 +500,6 @@ abstract class Painter {
   }
 
   create() {
-	console.log("Creating painter for item", this.item.key);
     const sources = this.getSources();
     const layers = this.getLayers();
     sources.forEach((source) =>
@@ -554,49 +556,49 @@ abstract class Painter {
 }
 
 class ProvincePainter extends Painter {
-getSources() {
-	const closedPath = closePolygon(this.item.coordinates);
-	const centerPoint = closedPath.reduce(
-		(center, point) => {
-			center.lat += point.lat;
-			center.lng += point.lng;
-			return center;
-		},
-		{ lat: 0, lng: 0 }
-	);
-	centerPoint.lat /= closedPath.length;
-	centerPoint.lng /= closedPath.length;
-	return [
-		{
-			id: this.item.key + "-source",
-			definition: {
-				type: "geojson",
-				data: {
-					type: "Feature",
-					geometry: {
-						type: "Polygon",
-						coordinates: [closedPath.map((point) => [point.lng, point.lat])],
-					},
-					properties: {},
-				},
-			},
-		},
-		{
-			id: this.item.key + "-center-source",
-			definition: {
-				type: "geojson",
-				data: {
-					type: "Feature",
-					geometry: {
-						type: "Point",
-						coordinates: [centerPoint.lng, centerPoint.lat],
-					},
-					properties: {},
-				},
-			},
-		},
-	];
-}
+  getSources() {
+    const closedPath = closePolygon(this.item.coordinates);
+    const centerPoint = closedPath.reduce(
+      (center, point) => {
+        center.lat += point.lat;
+        center.lng += point.lng;
+        return center;
+      },
+      { lat: 0, lng: 0 }
+    );
+    centerPoint.lat /= closedPath.length;
+    centerPoint.lng /= closedPath.length;
+    return [
+      {
+        id: this.item.key + "-source",
+        definition: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [closedPath.map((point) => [point.lng, point.lat])],
+            },
+            properties: {},
+          },
+        },
+      },
+      {
+        id: this.item.key + "-center-source",
+        definition: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [centerPoint.lng, centerPoint.lat],
+            },
+            properties: {},
+          },
+        },
+      },
+    ];
+  }
 
   getLayers() {
     return [
@@ -958,19 +960,19 @@ function updatePainters() {
   }
 
   const itemsByImportance = Array.from(props.mapItems).sort(
-	(a, b) => (b.importance || 0) - (a.importance || 0)
+    (a, b) => (b.importance || 0) - (a.importance || 0)
   );
 
   // create new painters
   itemsByImportance.forEach((item) => {
-	// For now redraw all to maintain importance order
+    // For now redraw all to maintain importance order
     // check to see if item has been drawn
     // const hasBeenDrawn = currentPainters.value.has(item.key);
     // if (!hasBeenDrawn) {
-      const painter = getPainter(map, item);
-      currentPainters.value.set(item.key, painter);
-      painter.create();
-      painter.setFocus(focusedItemKeys.value.has(item.key)); // Set focus state
+    const painter = getPainter(map, item);
+    currentPainters.value.set(item.key, painter);
+    painter.create();
+    painter.setFocus(focusedItemKeys.value.has(item.key)); // Set focus state
     // }
   });
 }
@@ -1050,22 +1052,63 @@ defineExpose({
   unfocusMapItem, // Expose the new function
 });
 
+function getCustomMapDimensions(): Bounds | null {
+  if (!props.customMap) return null;
+
+  const mapWidth = 0.005;
+  const mapHeight = mapWidth * props.customMap.ratio || 1;
+
+  return [
+    { lat: 0, lng: 0 },
+    { lat: mapHeight, lng: mapWidth },
+  ];
+}
+function getCustomMapBounds(): Bounds | null {
+  if (!props.customMap) return null;
+
+  // compute aspectRatio of map container
+  const aspectRatio =
+    mapContainer.value!.clientWidth / mapContainer.value!.clientHeight;
+  console.log({ aspectRatio });
+
+  const mapDimensions = getCustomMapDimensions()!;
+
+  // Compute bounds with margins on the shortest side the entire map fits exactly inside the viewport
+  let bounds: Bounds;
+  if (aspectRatio > props.customMap.ratio) {
+    // viewport is wider than map
+    const margin = (mapDimensions[1].lng - mapDimensions[0].lng) * 0.1;
+    bounds = [
+      { lat: mapDimensions[0].lat, lng: mapDimensions[0].lng - margin },
+      { lat: mapDimensions[1].lat, lng: mapDimensions[1].lng + margin },
+    ];
+  } else {
+    // viewport is taller than map
+    const margin = (mapDimensions[1].lat - mapDimensions[0].lat) * 0.1;
+    bounds = [
+      { lat: mapDimensions[0].lat - margin, lng: mapDimensions[0].lng },
+      { lat: mapDimensions[1].lat + margin, lng: mapDimensions[1].lng },
+    ];
+  }
+
+  return bounds;
+}
+
 onMounted(() => {
   map = new maplibregl.Map({
     container: mapContainer.value as HTMLElement,
     center: [-120, 37.422],
     zoom: 3,
-    pitch: props.customMapBackground ? 0 : 50,
-    maxPitch: props.customMapBackground ? 0 : 82,
-    maxBounds: props.mapBoundary,
-    dragRotate: !props.customMapBackground,
+    maxPitch: props.customMap ? 0 : 82,
+    maxBounds: getCustomMapBounds() || props.mapBoundary,
+    dragRotate: !props.customMap,
   });
 
   map.setStyle(
     "https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
     {
       transformStyle: (previousStyle, nextStyle) => {
-        if (props.customMapBackground) {
+        if (props.customMap) {
           nextStyle.sources = {};
           nextStyle.layers = [];
         } else {
@@ -1126,13 +1169,13 @@ onMounted(() => {
 
   map.addControl(
     new maplibregl.NavigationControl({
-      visualizePitch: !props.customMapBackground,
+      visualizePitch: !props.customMap,
       showZoom: true,
-      showCompass: !props.customMapBackground,
+      showCompass: !props.customMap,
     })
   );
 
-  if (!props.customMapBackground) {
+  if (!props.customMap) {
     map.addControl(
       new maplibregl.TerrainControl({
         source: "terrainSource",
@@ -1145,16 +1188,17 @@ onMounted(() => {
     // Render map items
     mapIsReady.value = true;
 
-    if (props.customMapBackground) {
+    if (props.customMap) {
       // Add image source
+      const bounds = getCustomMapDimensions()!;
       map.addSource("customImageSource", {
         type: "image",
-        url: props.customMapBackground,
+        url: props.customMap.src,
         coordinates: [
-          [props.mapBoundary![0].lng, props.mapBoundary![1].lat],
-          [props.mapBoundary![1].lng, props.mapBoundary![1].lat],
-          [props.mapBoundary![1].lng, props.mapBoundary![0].lat],
-          [props.mapBoundary![0].lng, props.mapBoundary![0].lat],
+          [bounds[0].lng, bounds[1].lat],
+          [bounds[1].lng, bounds[1].lat],
+          [bounds[1].lng, bounds[0].lat],
+          [bounds[0].lng, bounds[0].lat],
         ],
       });
 
