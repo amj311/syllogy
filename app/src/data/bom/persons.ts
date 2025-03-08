@@ -20,37 +20,37 @@ export const BomPeople = {
     "person-abinadi": {
         id: "person-abinadi",
         name: "Abinadi",
-		number: undefined,
+		number: null,
         description: "Nephite prophet sent to people of Lehi-Nephi. Instrumental in conversion of Alma1. Prophesied to Noah3, then was burned to death (c. 150 BC)."
     },
     "person-abinadom": {
         id: "person-abinadom",
         name: "Abinadom",
-		number: undefined,
+		number: null,
         description: "Nephite historian and warrior who knew of neither revelation nor prophecy. Son of Chemish and father of Amaleki1 (c. 3rd century BC)."
     },
     "person-abish": {
         id: "person-abish",
         name: "Abish",
-		number: undefined,
+		number: null,
         description: "Lamanite woman converted following her father's vision, and a servant of Lamoni's wife."
     },
     "person-aha": {
         id: "person-aha",
         name: "Aha",
-		number: undefined,
+		number: null,
         description: "Nephite military officer and son of Zoram2 who went into Lamanite territory to recover captives (c. 80 BC)."
     },
     "person-ahah": {
         id: "person-ahah",
         name: "Ahah",
-		number: undefined,
+		number: null,
         description: "an iniquitous Jaredite king who led a short life. Son of Seth2, and father or ancestor of Ethem."
     },
     "person-akish": {
         id: "person-akish",
         name: "Akish",
-		number: undefined,
+		number: null,
         description: "wicked Jaredite son of Kimnor, and erstwhile friend of Omer, who worked in secret combinations. Plotted with Jared3 and his daughter to overthrow Omer. Obtained kingdom by slaying Jared3. Jealous of his own son, imprisoned and starved him, which angered another son Nimrah, and initiated a years-long war between Akish and his sons."
     },
     "person-alma-1": {
@@ -80,49 +80,49 @@ export const BomPeople = {
     "person-amalickiah": {
         id: "person-amalickiah",
         name: "Amalickiah",
-		number: undefined,
+		number: null,
         description: "Nephite traitor, elder brother of Ammoron, who lead revolt against Helaman2, threatened to drink blood of Moroni1. After poisoning Lehonti and killing king of the Lamanites3, obtained throne and warred with Nephites. Killed by Teancum (c. 70 BC)."
     },
     "person-amaron": {
         id: "person-amaron",
         name: "Amaron",
-		number: undefined,
+		number: null,
         description: "Nephite record keeper who saw destruction of \"more wicked part\" of the Nephites. Brother of Chemish and son of Omni (c. 3rd century BC)."
     },
     "person-aminadab": {
         id: "person-aminadab",
         name: "Aminadab",
-		number: undefined,
+		number: null,
         description: "Nephite dissenter living among Lamanites. Reconverted by Nephi2 and Lehi4, whom he testified were conversing with angels (c. 30 BC)."
     },
     "person-amgid": {
         id: "person-amgid",
         name: "Amgid",
-		number: undefined,
+		number: null,
         description: "late Jaredite usurper king, overthrown by Com2."
     },
     "person-aminadi": {
         id: "person-aminadi",
         name: "Aminadi",
-		number: undefined,
+		number: null,
         description: "who interpreted writing on wall of the temple, written by the finger of God. Descendant of Nephi1 and ancestor of Amulek."
     },
     "person-amlici": {
         id: "person-amlici",
         name: "Amlici",
-		number: undefined,
+		number: null,
         description: "Nephite dissenter who became leader of dissenters, and was slain by Alma2 in battle (c. 87 BC). Namesake of the Amlicite people."
     },
     "person-ammah": {
         id: "person-ammah",
         name: "Ammah",
-		number: undefined,
+		number: null,
         description: "Nephite missionary, companion of Aaron3 and Muloki. Preached at Ani-Anti and Middoni, imprisoned in Middoni, rescued by Ammon3."
     },
     "person-ammaron": {
         id: "person-ammaron",
         name: "Ammaron",
-		number: undefined,
+		number: null,
         description: "fourth Nephite record keeper after visitation of Christ. Told Mormon2 how and when to hide plates. Son of Amos2, brother of Amos3 (c. AD 306)."
     },
     "person-ammon-1": {
@@ -146,25 +146,25 @@ export const BomPeople = {
     "person-ammoron": {
         id: "person-ammoron",
         name: "Ammoron",
-		number: undefined,
+		number: null,
         description: "Nephite traitor, brother of Amalickiah and descendant of Zoram, who engaged in angry correspondence with Moroni1. King of the Lamanites after Amalickiah's death, then killed by Teancum (c. 66-61 BC)."
     },
     "person-amnigaddah": {
         id: "person-amnigaddah",
         name: "Amnigaddah",
-		number: undefined,
+		number: null,
         description: "captive Jaredite, in line of kingly succession. Father of Coriantum2, and son of Aaron2."
     },
     "person-amnor": {
         id: "person-amnor",
         name: "Amnor",
-		number: undefined,
+		number: null,
         description: "Nephite spy in Amlicite campaign, along with Limher, Manti, and Zeram (c. 87 BC)."
     },
     "person-amoron": {
         id: "person-amoron",
         name: "Amoron",
-		number: undefined,
+		number: null,
         description: "Nephite from fifth century AD. Contemporary and subordinate of the prophet and army commander Mormon2 during final war between Lamanites and Nephites (c. AD 380–400)."
     },
     "person-amos-2": {
@@ -182,55 +182,55 @@ export const BomPeople = {
     "person-amulek": {
         id: "person-amulek",
         name: "Amulek",
-		number: undefined,
+		number: null,
         description: "Nephite son of Giddonah1, who was visited by an angel, converted by and a missionary companion of Alma2, and caused prison walls to tumble (c. 82–74 BC)."
     },
     "person-amulon": {
         id: "person-amulon",
         name: "Amulon",
-		number: undefined,
+		number: null,
         description: "wicked leader of priests of Noah3 at time of king Laman3, who was later made king and threatened believers with death."
     },
     "person-anti-nephi-lehi": {
         id: "person-anti-nephi-lehi",
         name: "Anti-Nephi-Lehi",
-		number: undefined,
+		number: null,
         description: "brother of Lamoni, king over converted Lamanites, who counseled with Ammon3. Namesake of ethnic group the Anti-Nephi-Lehies."
     },
     "person-antiomno": {
         id: "person-antiomno",
         name: "Antiomno",
-		number: undefined,
+		number: null,
         description: "Lamanite king of land of Middoni and friend to Lamoni, who imprisoned the missionaries Aaron3, Muloki, and Ammah."
     },
     "person-antionah": {
         id: "person-antionah",
         name: "Antionah",
-		number: undefined,
+		number: null,
         description: "chief ruler in Ammonihah who inquired of Alma2 about nature of immortality."
     },
     "person-antionum": {
         id: "person-antionum",
         name: "Antionum",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-antipus": {
         id: "person-antipus",
         name: "Antipus",
-		number: undefined,
+		number: null,
         description: "Nephite commander in city of Judea who battled Lamanites with Helaman2 and stripling warriors (c. 65 BC)."
     },
     "person-archeantus": {
         id: "person-archeantus",
         name: "Archeantus",
-		number: undefined,
+		number: null,
         description: "Nephite soldier, one of three \"choice men\" slain in battle (c. AD 375)."
     },
     "person-benjamin": {
         id: "person-benjamin",
         name: "Benjamin",
-		number: undefined,
+		number: null,
         description: "known as King Benjamin, righteous Nephite prophet and king, and father of Mosiah2, Helorum, and Helaman1. Reigned after father, Mosiah1. Drove warring Lamanites from Zarahemla using sword of Laban, received plates from Amaleki1, and established peace. After instructing sons to protect records and conferring kingdom on eldest, addressed people from tower, where he admonished service, industry, and charity to the poor. Taught of Christ (c. 120 BC)."
     },
     "person-brother of amaleki-1": {
@@ -242,7 +242,7 @@ export const BomPeople = {
     "person-brothers of amulon (unnamed)": {
         id: "person-brothers of amulon (unnamed)",
         name: "Brothers of Amulon (unnamed)",
-		number: undefined,
+		number: null,
         description: "perhaps metaphorical brothers (comprising priests of Noah3), who taught language of Nephi1 to Lamanites by order of King Laman3."
     },
     "person-brother of jared-2": {
@@ -254,13 +254,13 @@ export const BomPeople = {
     "person-brother of kim (unnamed)": {
         id: "person-brother of kim (unnamed)",
         name: "Brother of Kim (unnamed)",
-		number: undefined,
+		number: null,
         description: "unrighteous middle Jaredite who rebelled against Kim and subjected him and his descendants to captivity. Son of Morianton1."
     },
     "person-brother of nimrah (unnamed)": {
         id: "person-brother of nimrah (unnamed)",
         name: "Brother of Nimrah (unnamed)",
-		number: undefined,
+		number: null,
         description: "Jaredite whose father, Akish, imprisoned and starved him to death out of jealousy, sparking a war between Akish and his sons."
     },
     "person-brother of shiblom-1": {
@@ -272,19 +272,19 @@ export const BomPeople = {
     "person-captain moroni": {
         id: "person-captain moroni",
         name: "Captain Moroni",
-		number: undefined,
+		number: null,
         description: "see Moroni1"
     },
     "person-cezoram": {
         id: "person-cezoram",
         name: "Cezoram",
-		number: undefined,
+		number: null,
         description: "eighth Nephite chief judge (c. 30 BC), preceded by Nephi2, son of Helaman, and succeeded by his son, and eventually by Seezoram. (Cezoram and Seezoram are two different people and should not be confused with one another)."
     },
     "person-chemish": {
         id: "person-chemish",
         name: "Chemish",
-		number: undefined,
+		number: null,
         description: "Nephite record keeper, son of Omni and brother of Amaron (c. 3rd century BC)."
     },
     "person-cohor-1": {
@@ -320,13 +320,13 @@ export const BomPeople = {
     "person-corianton": {
         id: "person-corianton",
         name: "Corianton",
-		number: undefined,
+		number: null,
         description: "son of Alma2 (and younger brother to Helaman2 and Shiblon), Nephite missionary after he repented of chasing after the harlot Isabel (c. 74 BC)."
     },
     "person-coriantor": {
         id: "person-coriantor",
         name: "Coriantor",
-		number: undefined,
+		number: null,
         description: "late Jaredite in line of kingship, son of Moron, father or ancestor of Ether. Although his father had been king, Coriantor \"dwelt in captivity all his days\"."
     },
     "person-coriantum-1": {
@@ -374,13 +374,13 @@ export const BomPeople = {
     "person-corom": {
         id: "person-corom",
         name: "Corom",
-		number: undefined,
+		number: null,
         description: "middle Jaredite king, who did good for his people and fathered many children, including Kish. Son of Levi2."
     },
     "person-cumenihah": {
         id: "person-cumenihah",
         name: "Cumenihah",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-daughter of jared-3": {
@@ -392,13 +392,13 @@ export const BomPeople = {
     "person-emer": {
         id: "person-emer",
         name: "Emer",
-		number: undefined,
+		number: null,
         description: "middle Jaredite king who had a peaceful, prosperous reign of 62 years, executed righteous judgment, and saw Jesus Christ. Son of Omer and father of Coriantum1."
     },
     "person-emron": {
         id: "person-emron",
         name: "Emron",
-		number: undefined,
+		number: null,
         description: "Nephite soldier, one of three \"choice men\" slain in battle (c. AD 375).,"
     },
     "person-enos-2": {
@@ -410,49 +410,49 @@ export const BomPeople = {
     "person-esrom": {
         id: "person-esrom",
         name: "Esrom",
-		number: undefined,
+		number: null,
         description: "early Jaredite, son of Omer and brother to Coriantumr1, who fought their brother Jared3 to return kingdom to his father."
     },
     "person-ethem": {
         id: "person-ethem",
         name: "Ethem",
-		number: undefined,
+		number: null,
         description: "wicked later Jaredite king whose people hardened their hearts. Son or descendant of Ahah, father of Moron."
     },
     "person-ether": {
         id: "person-ether",
         name: "Ether",
-		number: undefined,
+		number: null,
         description: "influential and final Jaredite prophet. Descendant of Coriantor and namesake of Book of Ether. Made his record on 24 gold plates. Prophesied at time of Coriantumr2 but was rejected. Hid in cave from which he viewed final destruction of Jaredites, after which, finished and hid record later discovered by people of Limhi."
     },
     "person-ezias": {
         id: "person-ezias",
         name: "Ezias",
-		number: undefined,
+		number: null,
         description: "ancient prophet who testified in same manner as Zenock, Isaiah1, and Jeremiah, argued by Reynolds to be same as the Esaias, who lived in days of Abraham."
     },
     "person-gadianton": {
         id: "person-gadianton",
         name: "Gadianton",
-		number: undefined,
+		number: null,
         description: "a Nephite dissenter and chief of Gadianton robbers (c. 50 BC). Flattered Kiskumen to become leader of robber band, but after failing to kill Helaman3, fled to the wilderness. Later conspired in murder of chief judge Cezoram and his son, received secret oaths and covenants from the devil, and nearly destroyed Nephites."
     },
     "person-gazelem": {
         id: "person-gazelem",
         name: "Gazelem",
-		number: undefined,
+		number: null,
         description: "a seer (or, alternatively, a seer stone) prepared by God to see secret works of darkness.,"
     },
     "person-gid": {
         id: "person-gid",
         name: "Gid",
-		number: undefined,
+		number: null,
         description: "Nephite military officer and chief captain over band appointed to guard prisoners. Reported to Helaman2 the death and escape of rebellious prisoners, and took part in a strategy to capture Lamanite cities (c. 63 BC)."
     },
     "person-giddianhi": {
         id: "person-giddianhi",
         name: "Giddianhi",
-		number: undefined,
+		number: null,
         description: "chief of Gadianton robbers who arrogantly demanded Nephite lands from Lachoneus1, then commanded followers to go to battle against Nephites. Defeated and slain (c. AD 16–21)."
     },
     "person-giddonah-1": {
@@ -470,55 +470,55 @@ export const BomPeople = {
     "person-gideon": {
         id: "person-gideon",
         name: "Gideon",
-		number: undefined,
+		number: null,
         description: "Nephite patriot and counselor to king Limhi. A strong man who fought King Noah3, but spared his life. Later sent men into the wilderness to search for Noah3 and his priests, counselled with Limhi regarding dealings with Lamanite king, proposed a plan for escaping from Lamanites, taught in the Church, and withstood the antichrist Nehor, but was slain by Nehor. A valley and a city were named after him (c. 145-91 BC)."
     },
     "person-gidgiddonah": {
         id: "person-gidgiddonah",
         name: "Gidgiddonah",
-		number: undefined,
+		number: null,
         description: "Nephite commander slain with his 10,000 at battle of Cumorah (c. AD 385)."
     },
     "person-gidgiddoni": {
         id: "person-gidgiddoni",
         name: "Gidgiddoni",
-		number: undefined,
+		number: null,
         description: "Nephite commander, prophet, and judge appointed by Lachoneus1 to lead forces against followers of Gadianton robber Giddianhi. Gidgiddoni refused the people’s petition for offensive campaign, stockpiled weapons, and defeated the robbers when attacked. His campaign established a great peace (c. AD 16)."
     },
     "person-gilead": {
         id: "person-gilead",
         name: "Gilead",
-		number: undefined,
+		number: null,
         description: "brother of Shared, who slew part of army of Coriantumr2 when they were drunk, and took over Coriantumr2's throne."
     },
     "person-gilgah": {
         id: "person-gilgah",
         name: "Gilgah",
-		number: undefined,
+		number: null,
         description: "second son of Jared2, an early Jaredite who walked humbly before God and refused kingship."
     },
     "person-gilgal": {
         id: "person-gilgal",
         name: "Gilgal",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-hagoth": {
         id: "person-hagoth",
         name: "Hagoth",
-		number: undefined,
+		number: null,
         description: "Nephite ship builder, curious man who built ships to find those who went northward. Some of the ships disappeared and were never heard from again (c. 55 BC)."
     },
     "person-hearthom": {
         id: "person-hearthom",
         name: "Hearthom",
-		number: undefined,
+		number: null,
         description: "righteous middle Jaredite king who lost kingdom after 24 years and fell into captivity. Son of Lib1, and father of Heth2."
     },
     "person-helam": {
         id: "person-helam",
         name: "Helam",
-		number: undefined,
+		number: null,
         description: "convert from people of Noah3 and first of those baptized by Alma1 (c. 147 BC). Likely namesake of city and land of Helam.,"
     },
     "person-helaman-1": {
@@ -542,19 +542,19 @@ export const BomPeople = {
     "person-helem": {
         id: "person-helem",
         name: "Helem",
-		number: undefined,
+		number: null,
         description: "brother of Ammon2 and a seeker of people of Zeniff."
     },
     "person-helorum": {
         id: "person-helorum",
         name: "Helorum",
-		number: undefined,
+		number: null,
         description: "second son of King Benjamin (c. 130 BC), brother of Mosiah2 and Helaman1. Mentioned by name in only one verse, but was addressed with his brothers by King Benjamin. Taught by their father to read the writings in their original language."
     },
     "person-hem": {
         id: "person-hem",
         name: "Hem",
-		number: undefined,
+		number: null,
         description: "brother of Ammon2 and a seeker of people of Zeniff."
     },
     "person-heth-1": {
@@ -572,19 +572,19 @@ export const BomPeople = {
     "person-high priest of gilead": {
         id: "person-high priest of gilead",
         name: "High priest of Gilead",
-		number: undefined,
+		number: null,
         description: "who murdered Gilead as he sat on his throne, and who was in turn murdered by Lib2 in a secret pass."
     },
     "person-himni": {
         id: "person-himni",
         name: "Himni",
-		number: undefined,
+		number: null,
         description: "youngest son of Mosiah2, unbeliever who tried to destroy the Church, was converted by an angel, and traveled through Zarahemla with brothers to repair injuries they had done. Left in charge of the Church when Alma2 and companions began their missionary journey (c. 100-74 BC)."
     },
     "person-isabel": {
         id: "person-isabel",
         name: "Isabel",
-		number: undefined,
+		number: null,
         description: "harlot in land of Siron who stole many hearts, and who was chased after by Corianton (c. 75 BC)."
     },
     "person-isaiah-1": {
@@ -638,7 +638,7 @@ export const BomPeople = {
     "person-jacom": {
         id: "person-jacom",
         name: "Jacom",
-		number: undefined,
+		number: null,
         description: "first son of Jared2. Early Jaredite who walked humbly before God and refused kingship."
     },
     "person-jared-2": {
@@ -656,13 +656,13 @@ export const BomPeople = {
     "person-jarom": {
         id: "person-jarom",
         name: "Jarom",
-		number: undefined,
+		number: null,
         description: "Nephite record keeper and primary author of Book of Jarom who saw many wars and grieved over stiff-neckedness of Lamanites. Contrasted their blood-thirsty ways with the well-being of his own people. Son or descendant of Enos2 and father of Omni (c. 399–361 BC)."
     },
     "person-jeneum": {
         id: "person-jeneum",
         name: "Jeneum",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-jeremiah-2": {
@@ -674,7 +674,7 @@ export const BomPeople = {
     "person-jesus christ": {
         id: "person-jesus christ",
         name: "Jesus Christ",
-		number: undefined,
+		number: null,
         description: "Savior and Redeemer, who appeared as a resurrected Being to the Nephite people, taught and blessed them. Prophesied of by name and by titles throughout the Lehite diaspora until his appearance (c. 34 AD)."
     },
     "person-jonas-1": {
@@ -698,37 +698,37 @@ export const BomPeople = {
     "person-josh": {
         id: "person-josh",
         name: "Josh",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-judge in ammonihah (unnamed)": {
         id: "person-judge in ammonihah (unnamed)",
         name: "Judge in Ammonihah (unnamed)",
-		number: undefined,
+		number: null,
         description: "of order of Nehor. Burned believers. Smote, starved, and imprisoned Alma2 and Amulek. Killed by collapse of prison walls (c. 81 BC)."
     },
     "person-kib": {
         id: "person-kib",
         name: "Kib",
-		number: undefined,
+		number: null,
         description: "righteous early Jaredite king and father of Corihor1, who took him into captivity, and Shule, who freed him and restored him to his throne. Son of Orihah."
     },
     "person-kim": {
         id: "person-kim",
         name: "Kim",
-		number: undefined,
+		number: null,
         description: "rebellious middle Jaredite king and son of Morianton1, who was taken into captivity by his own brother. Father of Levi2."
     },
     "person-kimnor": {
         id: "person-kimnor",
         name: "Kimnor",
-		number: undefined,
+		number: null,
         description: "early Jaredite, father of Akish."
     },
     "person-king benjamin (see benjamin)": {
         id: "person-king benjamin (see benjamin)",
         name: "King Benjamin (see Benjamin)",
-		number: undefined,
+		number: null,
         description: ""
     },
     "person-king of the lamanites-1": {
@@ -764,37 +764,37 @@ export const BomPeople = {
     "person-kish": {
         id: "person-kish",
         name: "Kish",
-		number: undefined,
+		number: null,
         description: "middle Jaredite king about whom little is known; father of Lib1 and son of Corom, two righteous kings."
     },
     "person-kishkumen": {
         id: "person-kishkumen",
         name: "Kishkumen",
-		number: undefined,
+		number: null,
         description: "co-founder of Gadianton robbers. Secretly murdered Pahoran2 and escaped justice because of secret combinations. His plan to kill Helaman3 was foiled, leading to his murder."
     },
     "person-korihor": {
         id: "person-korihor",
         name: "Korihor",
-		number: undefined,
+		number: null,
         description: "antichrist who was successful in Zarahemla and Gideon, but was run out of Jershon. Debated Giddonah2 and Alma2, was struck dumb, then trodden down by Zoramites (c. 74 BC)."
     },
     "person-kumen": {
         id: "person-kumen",
         name: "Kumen",
-		number: undefined,
+		number: null,
         description: "one of twelve Nephite disciples chosen by the resurrected Jesus Christ. Taught multitude, prayed, encircled by fire, among either nine taken up into the heavens or three allowed to remain (c. AD 34)."
     },
     "person-kumenonhi": {
         id: "person-kumenonhi",
         name: "Kumenonhi",
-		number: undefined,
+		number: null,
         description: "one of twelve Nephite disciples chosen by the resurrected Jesus Christ. Taught multitude, prayed, encircled by fire, among either nine taken up into the heavens or three allowed to remain (c. AD 34)."
     },
     "person-laban": {
         id: "person-laban",
         name: "Laban",
-		number: undefined,
+		number: null,
         description: "custodian of the brass plates who refused to turn them over to sons of Lehi1, and confiscated their riches when they attempted to purchase the plates. Slain by Nephi1, who used Laban's sword as a model for others (c. 600 BC)."
     },
     "person-lachoneus-1": {
@@ -812,7 +812,7 @@ export const BomPeople = {
     "person-lamah": {
         id: "person-lamah",
         name: "Lamah",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-laman-1": {
@@ -842,13 +842,13 @@ export const BomPeople = {
     "person-lamoni": {
         id: "person-lamoni",
         name: "Lamoni",
-		number: undefined,
+		number: null,
         description: "descendant of Ishmael2 and a Lamanite king dramatically converted by Ammon3. While being taught by Ammon3 he fell to the earth, as did his wife, overcome by Spirit. Their revival lead to conversion of many. Accompanied Ammon3 to Middoni to free the prisoners there — during which journey he met his father, who threatened to kill them both, but who was later converted. Upon return, taught his people, built synagogues, and counseled in defense of Anti-Nephi-Lehies (c. 178 BC)."
     },
     "person-leader (unnamed)": {
         id: "person-leader (unnamed)",
         name: "Leader (unnamed)",
-		number: undefined,
+		number: null,
         description: "bloodthirsty head of first of two expeditions returning to Land of Nephi, which expeditions are described in books of Omni and Mosiah, and both of which included Zeniff (c. 200 BC)."
     },
     "person-lehi-1": {
@@ -878,13 +878,13 @@ export const BomPeople = {
     "person-lehonti": {
         id: "person-lehonti",
         name: "Lehonti",
-		number: undefined,
+		number: null,
         description: "Lamanite officer who was lured into trap by Amalickiah and poisoned (c. 72 BC)."
     },
     "person-lemuel": {
         id: "person-lemuel",
         name: "Lemuel",
-		number: undefined,
+		number: null,
         description: "rebellious second son of Lehi1 and brother to Laman1, Sam, Nephi1, Jacob2, and Joseph2. Travelled into the wilderness with his family, murmured against his father and younger brother Nephi1, failed to obtain brass plates from Laban, smote brothers, stirred up Laman1 and sons of Ishmael2 to kill Nephi1, was chastised by an angel, became follower of Laman1, thereby bringing a generational curse upon own family (c. 600 BC)."
     },
     "person-levi-2": {
@@ -908,49 +908,49 @@ export const BomPeople = {
     "person-limhah": {
         id: "person-limhah",
         name: "Limhah",
-		number: undefined,
+		number: null,
         description: "Nephite commander lost in final battle at Cumorah (c. AD 385)."
     },
     "person-limher": {
         id: "person-limher",
         name: "Limher",
-		number: undefined,
+		number: null,
         description: "Nephite spy in Amlicite campaign, along with Amnor, Manti, and Zeram (c. 87 BC)."
     },
     "person-limhi": {
         id: "person-limhi",
         name: "Limhi",
-		number: undefined,
+		number: null,
         description: "righteous son of Noah3, and third and final Nephite king in land of Lehi-Nephi. While in bondage to Lamanites — and after three unsuccessful rebellions — encountered Ammon1 and brethren, learned their good news from Zarahemla, and shared with them record of Zeniff. Invited them to preach to his people, then planned their joint escape on advice of Gideon. Taught and baptized by Alma1, and joined people of king Mosiah2, to whom he gave the 24 gold plates of Jaredite prophet Ether (c. 121 BC)."
     },
     "person-luram": {
         id: "person-luram",
         name: "Luram",
-		number: undefined,
+		number: null,
         description: "Nephite soldier, one of three \"choice men\" slain in battle (c. AD 375)."
     },
     "person-mahah": {
         id: "person-mahah",
         name: "Mahah",
-		number: undefined,
+		number: null,
         description: "third son of Jared2, an early Jaredite who walked humbly before God and refused kingship."
     },
     "person-manti": {
         id: "person-manti",
         name: "Manti",
-		number: undefined,
+		number: null,
         description: "Nephite spy in Amlicite campaign, along with Amnor, Limher, and Zeram (c. 87 BC)."
     },
     "person-mathoni": {
         id: "person-mathoni",
         name: "Mathoni",
-		number: undefined,
+		number: null,
         description: "brother of Mathonihah, and one of twelve Nephite disciples chosen by the resurrected Jesus Christ. Taught multitude, prayed, encircled by fire, among either nine taken up into the heavens or three allowed to remain (c. AD 34)."
     },
     "person-mathonihah": {
         id: "person-mathonihah",
         name: "Mathonihah",
-		number: undefined,
+		number: null,
         description: "brother of Mathoni, and one of twelve Nephite disciples chosen by the resurrected Jesus Christ. Taught multitude, prayed, encircled by fire, among either nine taken up into the heavens or three allowed to remain (c. AD 34)."
     },
     "person-morianton-1": {
@@ -980,7 +980,7 @@ export const BomPeople = {
     "person-moron": {
         id: "person-moron",
         name: "Moron",
-		number: undefined,
+		number: null,
         description: "late Jaredite king who reigned during a time of great wickedness and turmoil, and was himself wicked. Lost half his kingdom for many years because of a rebellion and, after regaining kingdom, was completely overthrown and lived out his life in captivity. Son of Ethem, father of Coriantor, grandfather or ancestor of the prophet Ether."
     },
     "person-moroni-1": {
@@ -1022,19 +1022,19 @@ export const BomPeople = {
     "person-mulek": {
         id: "person-mulek",
         name: "Mulek",
-		number: undefined,
+		number: null,
         description: "purported to be last son of Jewish king Zedekiah1. After death of brothers, escaped Jerusalem and was brought across the sea to new land with group of people known variously as people of Zarahemla, seed of Zedekiah1, people of Mulek, and colloquially, as the Mulekites. Ancestor of Zarahemla, and namesake of Nephite land to the north, and eastern shore city south of Bountiful (c. 597 BC)."
     },
     "person-muloki": {
         id: "person-muloki",
         name: "Muloki",
-		number: undefined,
+		number: null,
         description: "Nephite missionary, companion of Aaron3 and Ammah, imprisoned in Middoni, rescued by Ammon3."
     },
     "person-nehor": {
         id: "person-nehor",
         name: "Nehor",
-		number: undefined,
+		number: null,
         description: "Nephite apostate, religious theorist, antichrist. Proclaimed against Church, contended with Gideon, grew angry and slew Gideon, condemned by Alma2 for murder and for introducing priestcraft. Executed and died \"ignominious\" death (c. 91 BC). Namesake of the Order of Nehors (an indigenous religion, originating from but separate to the Nephite religion)."
     },
     "person-nephi-1": {
@@ -1064,19 +1064,19 @@ export const BomPeople = {
     "person-nephihah": {
         id: "person-nephihah",
         name: "Nephihah",
-		number: undefined,
+		number: null,
         description: "second Nephite chief judge (c. 83-67 BC). Succeeded Alma2 the Younger when Alma2 had surrendered judgment seat to him to devote more time to missionary work. Son Pahoran1 inherited judgment seat after his death."
     },
     "person-neum": {
         id: "person-neum",
         name: "Neum",
-		number: undefined,
+		number: null,
         description: "Hebrew prophet, quoted by Nephi1, who prophesied Christ's crucifixion. By metaphor, the Biblical prophet Nahum's foretelling of the destruction of Nineveh (c. 612 BC) may be that same prophecy referenced by Nephi1."
     },
     "person-nimrah": {
         id: "person-nimrah",
         name: "Nimrah",
-		number: undefined,
+		number: null,
         description: "Jaredite son of Akish, maternal grandson of Jared3. Angry that his father had starved his brother, fled with a small band to great-grandfather Omer. Later joined by his other brothers and restored kingdom to Omer."
     },
     "person-nimrod-1": {
@@ -1106,49 +1106,49 @@ export const BomPeople = {
     "person-omer": {
         id: "person-omer",
         name: "Omer",
-		number: undefined,
+		number: null,
         description: "righteous middle Jaredite king, son of Shule and father to Emer, Jared3, Esrom, and Coriantumr1. Overthrown by Jared3, spent half of days in captivity, until sons regained kingdom for him. Jared3 and his daughter plotted with Akish to overthrow Omer's kingdom. Warned by God, escaped with family. Later joined by great-grandsons Nimrah and brothers, who restored his kingdom."
     },
     "person-omner": {
         id: "person-omner",
         name: "Omner",
-		number: undefined,
+		number: null,
         description: "third son of Mosiah2, unbeliever who tried to destroy the Church, was converted by an angel, and traveled through Zarahemla with brothers to repair injuries they had done (c. 100-74 BC)."
     },
     "person-omni": {
         id: "person-omni",
         name: "Omni",
-		number: undefined,
+		number: null,
         description: "Nephite record keeper and son of Jarom. Fought with sword to preserve his people. Admitted own wickedness and bemoaned wars and bloodshed. Passed record to son Amaron (c. 390 BC)."
     },
     "person-orihah": {
         id: "person-orihah",
         name: "Orihah",
-		number: undefined,
+		number: null,
         description: "first Jaredite king, fourth son of Jared2. Walked humbly, executed righteous judgment. Fathered 31 sons and daughters, including Kib."
     },
     "person-paanchi": {
         id: "person-paanchi",
         name: "Paanchi",
-		number: undefined,
+		number: null,
         description: "Nephite rebel and son of Pahoran1, who contended with brothers Pahoran2 and Pacumeni for judgment seat. Angry when older brother was appointed, caused rebellion. Condemned to death, which lead to assassination of Pahoran2 (c. 52 BC)."
     },
     "person-pachus": {
         id: "person-pachus",
         name: "Pachus",
-		number: undefined,
+		number: null,
         description: "rebel king of Nephite dissenters in Zarahemla who allied with Ammoron, drove freemen from land, battled with Moroni1 and Pahoran1, and was slain (c. 61 BC)."
     },
     "person-pacumeni": {
         id: "person-pacumeni",
         name: "Pacumeni",
-		number: undefined,
+		number: null,
         description: "fifth Nephite chief judge, son of Pahoran1, brother of Pahoran2, and contender for judgment seat. After assassination of brother by Gadianton robber Kishkumen, acquired judgment seat briefly. Lamanite invader Coriantumr3 caught Pacumeni fleeing, killed him at city wall. Helaman3 succeeded as chief judge (c. 52 BC)."
     },
     "person-pagag": {
         id: "person-pagag",
         name: "Pagag",
-		number: undefined,
+		number: null,
         description: "eldest son of the Brother of Jared2, who refused offer to become king."
     },
     "person-pahoran-1": {
@@ -1190,13 +1190,13 @@ export const BomPeople = {
     "person-riplakish": {
         id: "person-riplakish",
         name: "Riplakish",
-		number: undefined,
+		number: null,
         description: "unrighteous Jaredite king, who heavily taxed people, executed those who didn't labor, engaged in whoredoms, and was killed in uprising. Son of Shez1 and brother of Shez2. After a break in continuity of the kingdom, succeeded by descendant Morianton1."
     },
     "person-sam": {
         id: "person-sam",
         name: "Sam",
-		number: undefined,
+		number: null,
         description: "righteous third son of Lehi1 and brother to Laman1, Lemuel, Nephi1, Jacob2, and Joseph2. Stood by younger brother Nephi1 when he was repeatedly abused at hands of older brothers, believed his words, accompanied him into wilderness, blessed by their father and caused him to rejoice (c. 600 BC)."
     },
     "person-samuel-1": {
@@ -1214,25 +1214,25 @@ export const BomPeople = {
     "person-sariah": {
         id: "person-sariah",
         name: "Sariah",
-		number: undefined,
+		number: null,
         description: "wife of Lehi1, mother of six sons and an unknown number of daughters. Accompanied family from Jerusalem, grieved over sons' apparent disappearance, murmured against Lehi1, rejoiced over sons' return. At elder sons' rebellion, nearly died from grief (c. 600 BC)."
     },
     "person-seantum": {
         id: "person-seantum",
         name: "Seantum",
-		number: undefined,
+		number: null,
         description: "fratricidal brother of Nephite judge Seezoram. Member of Gadianton band, whose murder of his brother was revealed by Nephi2 through inspiration. Captured by people and tried. Confessed (c. 23 BC)."
     },
     "person-seezoram": {
         id: "person-seezoram",
         name: "Seezoram",
-		number: undefined,
+		number: null,
         description: "brother of Seantum and member of Gadianton band, tenth known Nephite chief judge, eventually succeeded by Lachoneus1. How and when he began his reign as chief judge is not known; his first appearance in the Book of Mormon was when Nephi2, son of Helaman, prophesied his murder by hand of his brother, Seantum (c. 23 BC). (Not to be confused with Cezoram, another Nephite chief judge who was assassinated earlier.)"
     },
     "person-servant of amalickiah (unnamed)": {
         id: "person-servant of amalickiah (unnamed)",
         name: "Servant of Amalickiah (unnamed)",
-		number: undefined,
+		number: null,
         description: "who poisoned Lehonti, and likely same who slew king of the Lamanites3 (c. 72 BC)."
     },
     "person-servant of helaman-3": {
@@ -1256,7 +1256,7 @@ export const BomPeople = {
     "person-shared": {
         id: "person-shared",
         name: "Shared",
-		number: undefined,
+		number: null,
         description: "Jaredite military leader and brother of Gilead, who battled Coriantumr2 and sons for control of kingdom. For three days engaged in combat with Coriantumr2 at battle of Gilgal, severely wounding him but losing own life in the process."
     },
     "person-shem-2": {
@@ -1268,13 +1268,13 @@ export const BomPeople = {
     "person-shemnon": {
         id: "person-shemnon",
         name: "Shemnon",
-		number: undefined,
+		number: null,
         description: "one of twelve Nephite disciples chosen by the resurrected Jesus Christ. Taught multitude, prayed, encircled by fire, among either nine taken up into heavens or three allowed to remain (c. AD 34)."
     },
     "person-sherem": {
         id: "person-sherem",
         name: "Sherem",
-		number: undefined,
+		number: null,
         description: "an antichrist who used sophistry and flattery to argue against Christ. Discredited by Jacob2, overcome by power of God, confessed own deceit, died (c. fifth century BC). At least one writer argues that Sherem was a son or descendant of Zoram1. Hugh Nibley proposed that \"Sherem\" means \"snub nosed or pug nosed.\""
     },
     "person-shez-1": {
@@ -1304,61 +1304,61 @@ export const BomPeople = {
     "person-shiblon": {
         id: "person-shiblon",
         name: "Shiblon",
-		number: undefined,
+		number: null,
         description: "Nephite missionary & record-keeper, second son of Alma2 (and brother to Helaman2 and Corianton). Accompanied father, sons of Mosiah2, and younger brother on mission to Zoramite dissenters. Blessed by father. Preaching lead to peace. Kept records and passed them to Helaman3 before death (c. 74BC)."
     },
     "person-shiz": {
         id: "person-shiz",
         name: "Shiz",
-		number: undefined,
+		number: null,
         description: "Jaredite military leader and brother of Lib2. Swore to avenge brother's blood, slew women and children, burnt cities, brutalized civilization. Coriantumr2 fought back, exchanged bitter correspondence with Shiz, re-took battlefield, and beheaded him. Their battle lead to the end of Jaredite civilization."
     },
     "person-son of cezoram (unnamed)": {
         id: "person-son of cezoram (unnamed)",
         name: "Son of Cezoram (unnamed)",
-		number: undefined,
+		number: null,
         description: "ninth Nephite judge, murdered on judgment seat, as was his father (c. 26 BC)."
     },
     "person-shule": {
         id: "person-shule",
         name: "Shule",
-		number: undefined,
+		number: null,
         description: "righteous early Jaredite king. Born in captivity after brother Corihor1 usurped kingdom from their father Kib. Upon maturity, came to hill Ephraim to molten swords, armed followers, restored kingdom to his father. Eventually became king, executed righteous judgment. Nephew Noah2 rebelled, Shule's sons, including Omer, put down rebellion. Cohor2 rebelled and was also slain."
     },
     "person-teancum": {
         id: "person-teancum",
         name: "Teancum",
-		number: undefined,
+		number: null,
         description: "Nephite military leader. Headed army to stop Morianton2 from joining Lamanites. Battled Amalickiah, whom he slew with javelin in his sleep. Counseled with Moroni1 and others to retake Mulek through decoy. Scattered Lamanite defenders, put prisoners to work building fortifications. Provisioned by Pahoran1 and later by Moroni1. Under cover of night, slew Ammoron but died in aftermath (c. 67 BC)."
     },
     "person-teomner": {
         id: "person-teomner",
         name: "Teomner",
-		number: undefined,
+		number: null,
         description: "Nephite military officer. Participated with Helaman2 and Gid in ambush of Lamanites to retake Manti (c. 63 BC)."
     },
     "person-timothy": {
         id: "person-timothy",
         name: "Timothy",
-		number: undefined,
+		number: null,
         description: "brother of Nephi2, raised from the dead, one of twelve Nephite disciples chosen by the resurrected Jesus Christ. Taught multitude, prayed, encircled by fire, among either nine taken up into the heavens or three allowed to remain (c. AD 34)."
     },
     "person-tubaloth": {
         id: "person-tubaloth",
         name: "Tubaloth",
-		number: undefined,
+		number: null,
         description: "Lamanite king, son of Ammoron, the previous king. Appointed Coriantumr3, a mighty man and Nephite dissenter, to lead his armies (c. 51 BC)."
     },
     "person-usurper": {
         id: "person-usurper",
         name: "Usurper",
-		number: undefined,
+		number: null,
         description: "late Jaredite king, descendant of the brother of Jared and a \"mighty man\" of unknown connection to Moron, whom he overthrew, or to Coriantor, whom he kept in captivity."
     },
     "person-wives of amulon and his brothers (unnamed)": {
         id: "person-wives of amulon and his brothers (unnamed)",
         name: "Wives of Amulon and his brothers (unnamed)",
-		number: undefined,
+		number: null,
         description: "daughters of Lamanites who rejected conduct and names of their fathers."
     },
     "person-wife-1": {
@@ -1388,13 +1388,13 @@ export const BomPeople = {
     "person-wife of zoram (unnamed)": {
         id: "person-wife of zoram (unnamed)",
         name: "Wife of Zoram (unnamed)",
-		number: undefined,
+		number: null,
         description: "eldest daughter of Ishmael2."
     },
     "person-zarahemla": {
         id: "person-zarahemla",
         name: "Zarahemla",
-		number: undefined,
+		number: null,
         description: "leader of Mulek's colony, descendant of Mulek. Discovered by Mosiah1, rejoiced at learning of existence of brass plates containing record of Jews. Learned language of Mosiah1, recited genealogy, provided stone record of Jaredites obtained from Coriantumr2, united with people of Mosiah1 (c. 200 BC).  Ancestor of Ammon2 and Coriantumr3. Zarahemla was namesake of a people, as well as two cities, and a land."
     },
     "person-zedekiah-1": {
@@ -1412,49 +1412,49 @@ export const BomPeople = {
     "person-zeezrom": {
         id: "person-zeezrom",
         name: "Zeezrom",
-		number: undefined,
+		number: null,
         description: "Nephite lawyer in Ammonihah. Expert in rhetorical devices, accused Alma2 and Amulek, attempted to bribe Amulek to deny God, caught in own lies. Convinced of God's power, inquired sincerely, astonished at their words. Became sick, healed by Alma2. Converted and baptized, became Nephite missionary (c. 82 BC)."
     },
     "person-zemnarihah": {
         id: "person-zemnarihah",
         name: "Zemnarihah",
-		number: undefined,
+		number: null,
         description: "leader of Gadianton band, successor to Giddianhi. Laid siege to Nephites, hampered by lack of provisions, withdrew to head northward, cut off by Gidgiddoni, captured and hanged  (c. AD 21)."
     },
     "person-zenephi": {
         id: "person-zenephi",
         name: "Zenephi",
-		number: undefined,
+		number: null,
         description: "military commander who carried off provisions of widows and children, leaving them to die (c. AD 400)., "
     },
     "person-zeniff": {
         id: "person-zeniff",
         name: "Zeniff",
-		number: undefined,
+		number: null,
         description: "father of Noah3, grandfather of Limhi, and righteous leader of expedition of Nephites who left Zarahemla to land of Lehi-Nephi (c. 200 BC). Record comprises Mosiah 9 through 22. Sent to spy among Lamanites, covenanted with King Laman2 to possess land of Lehi-Nephi. Made king, betrayed by Laman2, and drove out Lamanite invaders before dying."
     },
     "person-zenock": {
         id: "person-zenock",
         name: "Zenock",
-		number: undefined,
+		number: null,
         description: "apocryphal prophet of ancient Israel. Predicted Christ's crucifixion, testified of mercy of God, quoted by Alma2, prophesied destruction at advent of Christ."
     },
     "person-zenos": {
         id: "person-zenos",
         name: "Zenos",
-		number: undefined,
+		number: null,
         description: "apocryphal prophet of ancient Israel. Foretold three days of darkness at Christ's crucifixion and gathering of Israel, quoted by Jacob2, testified of redemption through Christ, slain for boldness of testimony."
     },
     "person-zerahemnah": {
         id: "person-zerahemnah",
         name: "Zerahemnah",
-		number: undefined,
+		number: null,
         description: "Lamanite commander who appointed bitter Amalekites and Zoramites as chief captains to stir up hatred toward Nephites. Army intimidated by Moroni1's arms and departed. Gathered again at Sidon where Moroni1 demanded surrender and oath to cease warring. Handed over weapons but refused oath. Lost scalp in attempt on Moroni1's life. In ensuing battle, relented and took oath (c. 74 BC)."
     },
     "person-zeram": {
         id: "person-zeram",
         name: "Zeram",
-		number: undefined,
+		number: null,
         description: "Nephite military officer, one of several spies (including with Amnor, Limher, and Manti) sent to watch camp of the Amlicites (c. 87 BC)."
     },
     "person-zoram-1": {

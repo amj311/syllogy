@@ -4,141 +4,20 @@ import { onMounted, ref, computed, Component } from "vue";
 import { SorensonModel } from "./bomModels/sorenson";
 import { BYUModel } from "./bomModels/byu";
 import { BomFeature, Coordinates, FeatureId, Model } from "./mapTypes";
-
-
-const features: Record<string, BomFeature> = {
-  "feature-river-sidon": {
-    id: "feature-river-sidon",
-    name: "River Sidon",
-    description:
-      "Flows through the Land of Zarahemla; has a directional flow that suggests a higher elevation in the south and lower in the north.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "Flows through the Land of Zarahemla",
-      },
-    ],
-    type: "river",
-  },
-  "feature-city-of-zarahemla": {
-    id: "feature-city-of-zarahemla",
-    name: "Zarahemla",
-    description: "A major city located in the Land of Zarahemla.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "Located in the Land of Zarahemla",
-      },
-    ],
-    type: "city",
-  },
-  "feature-land-of-nephi": {
-    id: "feature-land-of-nephi",
-    name: "Land of Nephi",
-    description: "South of the Land of Zarahemla; higher in elevation.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "South of the Land of Zarahemla",
-      },
-    ],
-    type: "province",
-  },
-  "feature-land-of-zarahemla": {
-    id: "feature-land-of-zarahemla",
-    name: "Land of Zarahemla",
-    description:
-      "North of the Land of Nephi; lower in elevation; located near the River Sidon.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-nephi",
-        description: "North of the Land of Nephi",
-      },
-      {
-        featureId: "feature-river-sidon",
-        description: "Located near the River Sidon",
-      },
-    ],
-    type: "province",
-  },
-  "feature-land-of-bountiful": {
-    id: "feature-land-of-bountiful",
-    name: "Land of Bountiful",
-    description:
-      "North of Zarahemla; acts as a narrow defensive region leading to the Land Northward.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "North of Zarahemla",
-      },
-    ],
-    type: "province",
-  },
-  "feature-narrow-neck-of-land": {
-    id: "feature-narrow-neck-of-land",
-    name: "Narrow Neck of Land",
-    description:
-      "Connects the Land Southward (Bountiful) to the Land Northward; described as a relatively small land passage.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-bountiful",
-        description:
-          "Connects the Land Southward (Bountiful) to the Land Northward",
-      },
-    ],
-    type: "geo-area",
-  },
-  "feature-land-of-desolation": {
-    id: "feature-land-of-desolation",
-    name: "Land of Desolation",
-    description:
-      "North of the Narrow Neck; contains ruins of Jaredite civilization.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-narrow-neck-of-land",
-        description: "North of the Narrow Neck",
-      },
-    ],
-    type: "province",
-  },
-  "feature-sea-east": {
-    id: "feature-sea-east",
-    name: "Sea East",
-    description: "A sea located to the east of the Land of Zarahemla.",
-    startDate: null,
-    endDate: null,
-    constraints: [
-      {
-        featureId: "feature-land-of-zarahemla",
-        description: "Located to the east of the Land of Zarahemla",
-      },
-    ],
-    type: "sea",
-  },
-};
+import { BomFeatures } from "@/data/bom/features"; // Import features
 
 const models: Model[] = [SorensonModel, BYUModel];
 
 const importanceRank: Array<BomFeature["type"]> = [
-  "province",
-  "city",
-  "geo-area",
+  "region_1",
+  "city_1",
+  "city_2",
+  "city_3",
+  "region_2",
+  "region_3",
   "point",
   "sea",
+  "hill",
   "river",
 ];
 const importanceByType = importanceRank.reduce((acc, type, index) => {
@@ -147,15 +26,16 @@ const importanceByType = importanceRank.reduce((acc, type, index) => {
 }, {} as Record<BomFeature["type"], number>);
 
 const mapItems = computed<MapItem[]>(() => {
-  return Object.values(selectedModel.value.featureLocations).map(
-    (location) => ({
+  return Object.values(selectedModel.value.featureLocations).map((location) => {
+    const feature = BomFeatures[location.featureId];
+    return {
       key: location.featureId,
-      type: features[location.featureId].type,
+      type: feature.type,
       coordinates: location.coordinates,
-      label: features[location.featureId].name,
-      importance: importanceByType[features[location.featureId].type],
-    })
-  );
+      label: feature.mapLabel || feature.name,
+      importance: importanceByType[feature.type],
+    };
+  });
 });
 
 const selectedModel = ref<Model>(models[0]);
@@ -208,7 +88,7 @@ function editFeature(featureId: FeatureId) {
 function drawFeature(featureId: FeatureId) {
   // Logic to draw the feature's location
   if (mapWidgetRef.value) {
-    const featureType = features[featureId].type;
+    const featureType = BomFeatures[featureId].type;
     mapWidgetRef.value.drawFeature(
       featureType,
       (save: boolean, newCoordinates: Coordinates[]) => {
@@ -301,7 +181,7 @@ function copyModelAsJson() {
           Edit Map Boundary
         </button>
         <ul>
-          <li v-for="feature in Object.values(features)" :key="feature.id">
+          <li v-for="feature in Object.values(BomFeatures)" :key="feature.id">
             <div @click="toggleFeature(feature.id)" class="feature-title">
               <strong>{{ feature.name }}</strong>
             </div>
@@ -347,6 +227,7 @@ function copyModelAsJson() {
 
 .sidebar {
   width: 300px;
+  max-height: 100vh;
   padding: 2rem;
   background: #ffffff;
   border-right: 1px solid #ddd;

@@ -9,27 +9,17 @@ import { ref, onMounted, watch, reactive, onUnmounted, computed } from "vue";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import debounce from "@/utils/debounce";
+import { BomFeature } from "@/views/maps/mapTypes";
 
 const TERRAIN_EXAGGERATION = 1.25;
 
 const ToolTypes = ["linepointer", "mouse", "rectangle", "pindropper"] as const;
 type ToolType = (typeof ToolTypes)[number];
 
-const ItemTypes = [
-  "city",
-  "province",
-  "territory",
-  "geo-area",
-  "river",
-  "sea",
-  "point",
-] as const;
-type ItemType = (typeof ItemTypes)[number];
-
 export type MapItem = {
   key: string;
   label?: string;
-  type: ItemType | ToolType;
+  type: BomFeature["type"] | ToolType;
   importance?: number;
   coordinates: Array<{ lat: number; lng: number }>;
 };
@@ -43,6 +33,8 @@ const props = defineProps<{
   customMap?: {
     src: string;
     ratio: number;
+    maxZoom?: number;
+    minZoom?: number;
   };
 }>();
 
@@ -482,35 +474,58 @@ function closePolygon(
   return newCoordinates;
 }
 
+
+
+function computeZoomBounds(map, breakpoints: { min: number; max: number }) {
+    const mapMinZoom = map.getMinZoom(); // low number, zoomed out
+    const mapMaxZoom = map.getMaxZoom(); // high number, zoomed in
+    const diff = mapMaxZoom - mapMinZoom;
+    const computeBreakpoint = (which: "min" | "max") => {
+      const value = breakpoints[which];
+      if (value === 0) return 0;
+      return mapMinZoom + (diff * value) / 100;
+    };
+    return {
+      min: computeBreakpoint("min"),
+      max: computeBreakpoint("max"),
+    };
+  }
+
 abstract class Painter {
   protected map: maplibregl.Map;
   protected item: MapItem;
   protected isFocused = false;
+  protected sources: Set<string> = new Set();
+  protected layers: Set<string> = new Set();
 
   constructor(map: maplibregl.Map, item: MapItem) {
     this.map = map;
     this.item = item;
   }
 
-  abstract getSources(): any[];
-  abstract getLayers(): any[];
+  abstract createSources(): any[];
+  abstract createLayers(): any[];
 
   get path() {
     return this.item.coordinates;
   }
 
   create() {
-    const sources = this.getSources();
-    const layers = this.getLayers();
-    sources.forEach((source) =>
-      this.map.addSource(source.id, source.definition)
-    );
-    layers.forEach((layer) => this.map.addLayer(layer));
+    const sources = this.createSources();
+    const layers = this.createLayers();
+    sources.forEach((source) => {
+      this.map.addSource(source.id, source.definition);
+      this.sources.add(source.id);
+    });
+    layers.forEach((layer) => {
+      this.map.addLayer(layer);
+      this.layers.add(layer.id);
+    });
   }
 
   updateGeometry(newCoordinates: Array<Coordinates>) {
     this.item.coordinates = newCoordinates;
-    const newSources = this.getSources();
+    const newSources = this.createSources();
     newSources.forEach((newSource) => {
       const mapSource = this.map.getSource(newSource.id) as any;
       if (mapSource) {
@@ -520,7 +535,7 @@ abstract class Painter {
   }
 
   updateStyles() {
-    const layers = this.getLayers();
+    const layers = this.createLayers();
     layers.forEach((layer) => {
       const mapLayer = this.map.getLayer(layer.id);
       if (mapLayer) {
@@ -544,19 +559,27 @@ abstract class Painter {
   protected onBlur() {}
 
   remove() {
-    const layers = this.getLayers();
-    layers.forEach((layer) => {
-      if (this.map.getLayer(layer.id)) this.map.removeLayer(layer.id);
+    this.layers.forEach((layerId) => {
+      console.log("removing layer", layerId);
+      if (this.map.getLayer(layerId)) this.map.removeLayer(layerId);
     });
-    const sources = this.getSources();
-    sources.forEach((source) => {
-      if (this.map.getSource(source.id)) this.map.removeSource(source.id);
+    this.sources.forEach((sourceId) => {
+      console.log("removing source", sourceId);
+      if (this.map.getSource(sourceId)) this.map.removeSource(sourceId);
     });
   }
 }
 
-class ProvincePainter extends Painter {
-  getSources() {
+class RegionPainter extends Painter {
+  private get level() {
+    return this.item.type === "region_1"
+      ? 1
+      : this.item.type === "region_2"
+      ? 2
+      : 3;
+  }
+
+  createSources() {
     const closedPath = closePolygon(this.item.coordinates);
     const centerPoint = closedPath.reduce(
       (center, point) => {
@@ -600,7 +623,27 @@ class ProvincePainter extends Painter {
     ];
   }
 
-  getLayers() {
+  private get fontSize() {
+    return [20, 18, 16][this.level - 1];
+  }
+  private get textTransform() {
+    return this.level === 1 ? "uppercase" : "none";
+  }
+  private get haloWidth() {
+    return this.level === 1 ? 2 : 1;
+  }
+
+  private get zoomBounds() {
+    const breakpoints = {
+      1: { min: 0, max: 10 },
+      2: { min: 0, max: 100 },
+      3: { min: 50, max: 100 },
+    };
+    return computeZoomBounds(this.map, breakpoints[this.level]);
+  }
+
+  createLayers() {
+    console.log(this.zoomBounds);
     return [
       {
         id: this.item.key + "-label",
@@ -609,14 +652,20 @@ class ProvincePainter extends Painter {
         layout: {
           "text-field": this.item.label || "",
           "text-font": ["Noto Sans Italic"],
-          "text-size": 18,
+          "text-size": this.fontSize,
           "text-anchor": "center",
+          "text-transform": this.textTransform,
         },
         paint: {
           "text-color": "#000000",
           "text-halo-color": "#FFFFFF",
-          "text-halo-width": 1,
+          "text-halo-width": this.haloWidth,
         },
+        filter: [
+          "all",
+          [">=", ["zoom"], this.zoomBounds.min],
+          ["<=", ["zoom"], this.zoomBounds.max],
+        ],
       },
     ];
   }
@@ -643,8 +692,96 @@ class ProvincePainter extends Painter {
   }
 }
 
+class SeaPainter extends Painter {
+  createSources() {
+    const closedPath = closePolygon(this.item.coordinates);
+    const centerPoint = closedPath.reduce(
+      (center, point) => {
+        center.lat += point.lat;
+        center.lng += point.lng;
+        return center;
+      },
+      { lat: 0, lng: 0 }
+    );
+    centerPoint.lat /= closedPath.length;
+    centerPoint.lng /= closedPath.length;
+    return [
+      {
+        id: this.item.key + "-source",
+        definition: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [closedPath.map((point) => [point.lng, point.lat])],
+            },
+            properties: {},
+          },
+        },
+      },
+      {
+        id: this.item.key + "-center-source",
+        definition: {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [centerPoint.lng, centerPoint.lat],
+            },
+            properties: {},
+          },
+        },
+      },
+    ];
+  }
+
+  createLayers() {
+    return [
+      {
+        id: this.item.key + "-label",
+        type: "symbol",
+        source: this.item.key + "-center-source",
+        layout: {
+          "text-field": this.item.label || "",
+          "text-font": ["Noto Sans Italic"],
+          "text-size": 18,
+          "text-anchor": "center",
+        },
+        paint: {
+          "text-color": "#00AAFF",
+          "text-halo-color": "#FFFFFF",
+          "text-halo-width": 1,
+        },
+      },
+    ];
+  }
+
+  protected onFocus(): void {
+    if (this.map.getLayer(this.item.key + "-line")) {
+      return;
+    }
+    this.map.addLayer({
+      id: this.item.key + "-line",
+      type: "line",
+      source: this.item.key + "-source",
+      paint: {
+        "line-color": "#00AAFF",
+        "line-width": 2,
+      },
+    });
+  }
+
+  protected onBlur(): void {
+    if (this.map.getLayer(this.item.key + "-line")) {
+      this.map.removeLayer(this.item.key + "-line");
+    }
+  }
+}
+
 class RiverPainter extends Painter {
-  getSources() {
+  createSources() {
     return [
       {
         id: this.item.key + "-source",
@@ -666,7 +803,7 @@ class RiverPainter extends Painter {
     ];
   }
 
-  getLayers() {
+  createLayers() {
     return [
       {
         id: this.item.key + "-line",
@@ -701,7 +838,7 @@ class RiverPainter extends Painter {
 }
 
 class CityPainter extends Painter {
-  getSources() {
+  createSources() {
     return [
       {
         id: this.item.key + "-source",
@@ -723,7 +860,7 @@ class CityPainter extends Painter {
     ];
   }
 
-  getLayers() {
+  createLayers() {
     return [
       {
         id: this.item.key + "-circle",
@@ -790,7 +927,7 @@ function dottedLineLayers(sourceId: string) {
 }
 
 class LinePointerPainter extends Painter {
-  getSources() {
+  createSources() {
     return [
       {
         id: this.item.key + "-source",
@@ -812,13 +949,13 @@ class LinePointerPainter extends Painter {
     ];
   }
 
-  getLayers() {
+  createLayers() {
     return dottedLineLayers(this.item.key + "-source");
   }
 }
 
 class MousePainter extends Painter {
-  getSources() {
+  createSources() {
     return [
       {
         id: this.item.key + "-linesource",
@@ -857,7 +994,7 @@ class MousePainter extends Painter {
     ];
   }
 
-  getLayers() {
+  createLayers() {
     const layers = [
       ...dottedLineLayers(this.item.key + "-linesource"),
       {
@@ -876,7 +1013,7 @@ class MousePainter extends Painter {
 }
 
 class RectanglePainter extends Painter {
-  getSources() {
+  createSources() {
     const closedPath = closePolygon(this.item.coordinates);
     return [
       {
@@ -896,7 +1033,7 @@ class RectanglePainter extends Painter {
     ];
   }
 
-  getLayers() {
+  createLayers() {
     return [
       {
         id: this.item.key + "-fill",
@@ -924,9 +1061,17 @@ class RectanglePainter extends Painter {
 const painterClasses: Partial<
   Record<MapItem["type"], new (map: maplibregl.Map, item: MapItem) => Painter>
 > = {
-  province: ProvincePainter,
+  // Features
+  region_1: RegionPainter,
+  region_2: RegionPainter,
+  region_3: RegionPainter,
+  city_1: CityPainter,
+  city_2: CityPainter,
+  city_3: CityPainter,
+  sea: SeaPainter,
   river: RiverPainter,
-  city: CityPainter,
+
+  // Tools
   linepointer: LinePointerPainter,
   mouse: MousePainter,
   rectangle: RectanglePainter,
@@ -1012,18 +1157,20 @@ function editBoundary(
 }
 
 function drawFeature(
-  type: ItemType,
+  type: BomFeature["type"],
   onEnd?: (save: boolean, path: Array<Coordinates>) => void
 ) {
   // map feature type to the tool for drawing them
-  const toolMap = {
-    city: "pindropper",
-    province: "linepointer",
-    territory: "linepointer",
-    "geo-area": "linepointer",
+  const toolMap: Partial<Record<MapItem["type"], ToolType>> = {
+    city_1: "pindropper",
+    city_2: "pindropper",
+    city_3: "pindropper",
+    region_1: "linepointer",
+    region_2: "linepointer",
+    region_3: "linepointer",
     river: "linepointer",
     sea: "linepointer",
-    point: "pindropper", // Use PinDropper for point
+    point: "pindropper",
   };
   startDrawing({
     toolType: toolMap[type],
@@ -1069,7 +1216,6 @@ function getCustomMapBounds(): Bounds | null {
   // compute aspectRatio of map container
   const aspectRatio =
     mapContainer.value!.clientWidth / mapContainer.value!.clientHeight;
-  console.log({ aspectRatio });
 
   const mapDimensions = getCustomMapDimensions()!;
 
@@ -1098,7 +1244,9 @@ onMounted(() => {
   map = new maplibregl.Map({
     container: mapContainer.value as HTMLElement,
     center: [-120, 37.422],
-    zoom: 3,
+    zoom: 0,
+    maxZoom: props.customMap?.maxZoom,
+    minZoom: 0,
     maxPitch: props.customMap ? 0 : 82,
     maxBounds: getCustomMapBounds() || props.mapBoundary,
     dragRotate: !props.customMap,
@@ -1210,6 +1358,10 @@ onMounted(() => {
       });
     }
 
+    // save initial zoom after map boundary as minZoom
+    const minZoom = map.getZoom();
+    map.setMinZoom(minZoom);
+
     updatePainters();
     setupMapEventListeners();
   });
@@ -1229,6 +1381,7 @@ watch(
 );
 
 // Watch for changes in mapBoundary prop
+// CAREFUL this may interfere with the minZoom setting
 watch(
   () => props.mapBoundary,
   (newBounds) => {
